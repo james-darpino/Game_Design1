@@ -1,12 +1,25 @@
 """
-Show the proper way to organize a game using the a game class.
+A. Authors: James D'Arpino and Hannah Youssef
 
-Sample Python/Pygame Programs
-Simpson College Computer Science
-http://programarcadegames.com/
-http://simpson.edu/computer-science/
+B. Version: Alpha 1.0
 
-Explanation video: http://youtu.be/O4Y5KrNgP_c
+C. Description of code: This displays the player within
+the brown block(ladder). The player needs to avoid
+the falling blocks. If the player collides with a
+falling block, he/she dies. The goal for the alpha,
+is to get the highest score.
+
+D. Description of how to play: Press the arrow directionals
+to move. The goal is to avoid the falling blocks and
+attain the highest score.
+
+E. What's not working: The boundary on the right side of the
+ladder is a bit off, we need to work on that.
+
+F. What's left to work on: We need to add several elements to the game,
+such as, multiple types of falling blocks,indicator for blocks falling
+from the top power ups, health, health indicator and an indicator for the
+current power-ups the player has.
 """
 
 import pygame
