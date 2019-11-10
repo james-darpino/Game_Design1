@@ -355,7 +355,6 @@ class Game(object):
             # image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
             # screen.blit(image, (0, 0))
 
-            # displays ladder (surface, color, [x, y, width, height], border thickness
             pygame.draw.rect(screen, BLACK, [0, 0, 175, SCREEN_HEIGHT], 0)
 
             font = pygame.font.SysFont('georgiattf', 25, True, False)
