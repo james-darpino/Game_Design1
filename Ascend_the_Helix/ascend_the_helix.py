@@ -1,20 +1,12 @@
 """
 A. Authors: James D'Arpino and Hannah Youssef
-B. Version: Alpha 1.0
-C. Description of code: This displays the player within
-the brown block(ladder). The player needs to avoid
-the falling blocks. If the player collides with a
-falling block, he/she dies. The goal for the alpha,
-is to get the highest score.
-D. Description of how to play: Press the arrow directionals
-to move. The goal is to avoid the falling blocks and
-attain the highest score.
-E. What's not working: The boundary on the right side of the
-ladder is a bit off, we need to work on that.
-F. What's left to work on: We need to add several elements to the game,
-such as, multiple types of falling blocks,indicator for blocks falling
-from the top power ups, health, health indicator and an indicator for the
-current power-ups the player has.
+B. Version: Alpha 2.0
+C. Description of code: This displays the player within the Helix.
+The player needs to avoid the falling ions (Proton, Neutron, Electron).
+If the player collides with a falling ion, he/she dies and the game is over.
+The goal for the alpha, is to get the highest score.
+D. Description of how to play: Press the arrow directionals to move.
+The goal is to avoid the falling ions and attain the highest score.
 """
 
 import pygame
@@ -45,34 +37,90 @@ HELIX_LEFT_BOUNDARY = SCREEN_WIDTH / 4
 
 
 # --- Classes ---
-
-class Block(pygame.sprite.Sprite):
-    """ This class represents a simple block the player collects. """
-    BLOCK_WIDTH = 25
-    BLOCK_HEIGHT = 25
+class Proton(pygame.sprite.Sprite):
+    """ This class represents a Proton which the player must dodge. """
+    ION_WIDTH = 25
+    ION_HEIGHT = 25
 
     def __init__(self):
-        """ Constructor, create the image of the block. """
+        """ Constructor, create the image of the Proton. """
         super().__init__()
-        self.image = pygame.Surface([self.BLOCK_WIDTH, self.BLOCK_HEIGHT])
-        self.image.fill(RED)
+        self.image = pygame.Surface([self.ION_WIDTH, self.ION_HEIGHT])
         self.rect = self.image.get_rect()
-
-        self.image = pygame.image.load("atom.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.BLOCK_WIDTH, self.BLOCK_HEIGHT))
+        self.image = pygame.image.load("proton.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.ION_WIDTH, self.ION_HEIGHT))
 
     def draw(self, screen):
-        # blit the image to the screen
+        """ Maps the image to the rectangle. """
         screen.blit(self.image, self.rect)
 
     def reset_pos(self):
-        """ Called when the block is 'collected' or falls off
-            the screen. """
+        """ Shows the range and boundaries of where the ion should be placed. """
         self.rect.y = random.randrange(-300, -20)
         self.rect.x = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
 
     def update(self):
-        """ Automatically called when we need to move the block. """
+        """ Automatically called when we need to move the ion. """
+        self.rect.y += 2
+
+        if self.rect.y > SCREEN_HEIGHT + self.rect.height:
+            self.reset_pos()
+
+
+class Neutron(pygame.sprite.Sprite):
+    """ This class represents a Neutron which the player must dodge. """
+    ION_WIDTH = 25
+    ION_HEIGHT = 25
+
+    def __init__(self):
+        """ Constructor, create the image of the Neutron. """
+        super().__init__()
+        self.image = pygame.Surface([self.ION_WIDTH, self.ION_HEIGHT])
+        self.rect = self.image.get_rect()
+        self.image = pygame.image.load("neutron.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.ION_WIDTH, self.ION_HEIGHT))
+
+    def draw(self, screen):
+        """ Maps the image to the rectangle. """
+        screen.blit(self.image, self.rect)
+
+    def reset_pos(self):
+        """ Shows the range and boundaries of where the ion should be placed. """
+        self.rect.y = random.randrange(-300, -20)
+        self.rect.x = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
+
+    def update(self):
+        """ Automatically called when we need to move the ion. """
+        self.rect.y += 2
+
+        if self.rect.y > SCREEN_HEIGHT + self.rect.height:
+            self.reset_pos()
+
+
+class Electron(pygame.sprite.Sprite):
+    """ This class represents a Electron which the player must dodge. """
+    ION_WIDTH = 25
+    ION_HEIGHT = 25
+
+    def __init__(self):
+        """ Constructor, create the image of the Electron. """
+        super().__init__()
+        self.image = pygame.Surface([self.ION_WIDTH, self.ION_HEIGHT])
+        self.rect = self.image.get_rect()
+        self.image = pygame.image.load("electron.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.ION_WIDTH, self.ION_HEIGHT))
+
+    def draw(self, screen):
+        """ Maps the image to the rectangle. """
+        screen.blit(self.image, self.rect)
+
+    def reset_pos(self):
+        """ Shows the range and boundaries of where the ion should be placed. """
+        self.rect.y = random.randrange(-300, -20)
+        self.rect.x = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
+
+    def update(self):
+        """ Automatically called when we need to move the ion. """
         self.rect.y += 2
 
         if self.rect.y > SCREEN_HEIGHT + self.rect.height:
@@ -156,19 +204,42 @@ class Game(object):
         self.game_over = False
 
         # Create sprite lists
-        self.block_list = pygame.sprite.Group()
+        self.ion_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
 
         # Create the ion sprites
-        for i in range(20):
-            block = Block()
+        for i in range(10):
+            # create instances of proton, neutron and electron
+            proton = Proton()
+            neutron = Neutron()
+            electron = Electron()
 
-            block.rect.y = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
-            block.rect.x = random.randrange(HELIX_WIDTH - Block.BLOCK_WIDTH)
-            block.rect.y = random.randrange(-300, HELIX_HEIGHT - Block.BLOCK_WIDTH)
+            # create proton ions
+            proton.rect.y = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
+            proton.rect.x = random.randrange(HELIX_WIDTH - Proton.ION_WIDTH)
+            proton.rect.y = random.randrange(-300, HELIX_HEIGHT - Proton.ION_WIDTH)
 
-            self.block_list.add(block)
-            self.all_sprites_list.add(block)
+            # create neutron ions
+            neutron.rect.y = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
+            neutron.rect.x = random.randrange(HELIX_WIDTH - Neutron.ION_WIDTH)
+            neutron.rect.y = random.randrange(-300, HELIX_HEIGHT - Neutron.ION_WIDTH)
+
+            # create electron ions
+            electron.rect.y = random.uniform(HELIX_LEFT_BOUNDARY, HELIX_RIGHT_BOUNDARY)
+            electron.rect.x = random.randrange(HELIX_WIDTH - Electron.ION_WIDTH)
+            electron.rect.y = random.randrange(-300, HELIX_HEIGHT - Electron.ION_WIDTH)
+
+            # add protons to the list
+            self.ion_list.add(proton)
+            self.all_sprites_list.add(proton)
+
+            # add neutrons to the list
+            self.ion_list.add(neutron)
+            self.all_sprites_list.add(neutron)
+
+            # add electrons to the list
+            self.ion_list.add(electron)
+            self.all_sprites_list.add(electron)
 
         # Create the player
         self.player = Player()
@@ -178,7 +249,6 @@ class Game(object):
         self.rect = self.image.get_rect()
 
     def draw(self, screen):
-        # blit the image to the screen
         screen.blit(self.image, self.rect)
 
     def process_events(self):
@@ -228,12 +298,12 @@ class Game(object):
             # Move all the sprites
             self.all_sprites_list.update()
 
-            # See if the player block has collided with anything.
-            blocks_hit_list = pygame.sprite.spritecollide(self.player, self.block_list, False)
+            # See if the player has collided with anything.
+            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, False)
 
             self.score += 1
             # Check the list of collisions.
-            for _ in blocks_hit_list:
+            for _ in ions_hit_list:
                 self.game_over = True
 
             # Boundary check for player leaving helix left side
@@ -259,28 +329,34 @@ class Game(object):
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
         score_str = "Score: " + str(self.score)
-        screen.fill(LIGHT_BLUE)
-        display_feedback(screen)
-        # print(pygame.font.get_fonts())
 
         if self.game_over:
             # font = pygame.font.Font("Serif", 25)
-            font = pygame.font.SysFont("georgiattf", 15)
-            text = font.render(
-                "Game Over! An ion broke down your DNA. Click to restart!"
-                , True, BLACK)
+            font = pygame.font.SysFont("georgiattf", 25)
+            text = font.render("Game Over! An ion broke down your DNA. Click to restart!", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
 
         if not self.game_over:
+            image = pygame.image.load("blue_helix.png")
+            image = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            screen.blit(image, (0, 0))
+
+            display_feedback(screen)
             self.all_sprites_list.draw(screen)
-            pygame.draw.rect(screen, LIGHT_BLUE, [0, 0, 175, HELIX_HEIGHT], 0)
 
-            font = pygame.font.SysFont('Arial', 25, True, False)
+            image = pygame.image.load("blue_helix_175.png")
+            image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
+            screen.blit(image, (0, 0))
+
+            font = pygame.font.SysFont('georgiattf', 25, True, False)
             text = font.render(score_str, True, WHITE)
-
             screen.blit(text, [10, SCREEN_HEIGHT / 12])
+
+            font = pygame.font.SysFont('georgiattf', 20, False, False)
+            text = font.render("Ascend the Helix!", True, WHITE)
+            screen.blit(text, [10, SCREEN_HEIGHT / 35])
 
         pygame.display.flip()
 
