@@ -27,8 +27,8 @@ BROWN = (77, 38, 0)
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 800
 
-PLAYER_WIDTH = 40
-PLAYER_HEIGHT = 40
+PLAYER_WIDTH = 80
+PLAYER_HEIGHT = 80
 
 HELIX_X = SCREEN_WIDTH // 4
 HELIX_Y = 0
@@ -392,7 +392,7 @@ class Game(object):
             # image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
             # screen.blit(image, (0, 0))
 
-            pygame.draw.rect(screen, BLACK, [0, 0, 250, SCREEN_HEIGHT], 0)
+            pygame.draw.rect(screen, BLACK, [0, 0, 350, SCREEN_HEIGHT], 0)
 
             font = pygame.font.SysFont('georgiattf', 25, True, False)
             text = font.render(score_str, True, WHITE)
