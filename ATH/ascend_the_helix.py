@@ -333,6 +333,7 @@ class Game(object):
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
         score_str = "Score: " + str(self.score)
+        screen.fill(BLACK)
 
         if self.game_over:
             # font = pygame.font.Font("Serif", 25)
@@ -343,16 +344,18 @@ class Game(object):
             screen.blit(text, [center_x, center_y])
 
         if not self.game_over:
-            image = pygame.image.load("blue_helix.png")
-            image = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-            screen.blit(image, (0, 0))
+            # image = pygame.image.load("blue_helix.png")
+            # image = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            # screen.blit(image, (0, 0))
 
             display_feedback(screen)
             self.all_sprites_list.draw(screen)
 
-            image = pygame.image.load("blue_helix_175.png")
-            image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
-            screen.blit(image, (0, 0))
+            # image = pygame.image.load("blue_helix_175.png")
+            # image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
+            # screen.blit(image, (0, 0))
+
+            pygame.draw.rect(screen, BLACK, [0, 0, 175, SCREEN_HEIGHT], 0)
 
             font = pygame.font.SysFont('georgiattf', 25, True, False)
             text = font.render(score_str, True, WHITE)
