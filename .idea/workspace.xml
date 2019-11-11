@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="ca69bb20-7985-45cd-8972-6f321c298146" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="ca69bb20-7985-45cd-8972-6f321c298146" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/ATH/ascend_the_helix.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATH/ascend_the_helix.py" afterDir="false" />
+    </list>
+>>>>>>> Stashed changes
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +25,16 @@
     </option>
   </component>
   <component name="ProjectId" id="1TRGSf3X7Bpgi2154hBSx3ZoqSa" />
+<<<<<<< Updated upstream
   <component name="PropertiesComponent">
+=======
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+>>>>>>> Stashed changes
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -110,4 +125,10 @@
       </map>
     </option>
   </component>
+<<<<<<< Updated upstream
+=======
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+>>>>>>> Stashed changes
 </project>

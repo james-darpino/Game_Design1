@@ -35,8 +35,21 @@ HELIX_HEIGHT = SCREEN_HEIGHT
 HELIX_RIGHT_BOUNDARY = SCREEN_WIDTH / 1.4
 HELIX_LEFT_BOUNDARY = SCREEN_WIDTH / 4
 
-
+health = 100.0
+maxHealth = 100
+healthDashes = 10
 # --- Classes ---
+# class Game_State(pygame):
+# #     def __init__(self):
+# #         super().__init__()
+# #     def start_screen(self):
+# #
+# #     def game_screen(self):
+# #
+# #     def game_over_screen(self):
+# #
+
+
 class Proton(pygame.sprite.Sprite):
     """ This class represents a Proton which the player must dodge. """
     ION_WIDTH = 25
@@ -129,6 +142,7 @@ class Electron(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
     """ This class represents the player. """
+
     change_x = 0
     change_y = 0
     boundary_top = 0
@@ -137,6 +151,7 @@ class Player(pygame.sprite.Sprite):
     boundary_right = 0
     starting_position_x = SCREEN_WIDTH / 2
     starting_position_y = SCREEN_HEIGHT - PLAYER_HEIGHT
+
 
     def __init__(self):
         super().__init__()
@@ -148,6 +163,18 @@ class Player(pygame.sprite.Sprite):
         # import man climbing image
         self.image = pygame.image.load("man_climbing.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+
+    def do_health(self):
+        dash_convert = int(maxHealth / healthDashes)
+        current_dashes = int(health / dash_convert)
+
+        remaining_health = healthDashes - current_dashes
+        health_display = "-" * current_dashes
+        remaining_display = " " * remaining_health
+        percent = str(int((health / maxHealth) * 100)) + "%"
+
+        print("|" + health_display + remaining_display + "|")  # Print out textbased healthbar
+        print("         " + percent)
 
     def draw(self, screen):
         # blit the image to the screen
@@ -297,18 +324,21 @@ class Game(object):
         This method is run each time through the frame. It
         updates positions and checks for collisions.
         """
+        global health, healthDashes, maxHealth
         if not self.game_over:
             # Move all the sprites
             self.all_sprites_list.update()
 
             # See if the player has collided with anything.
-            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, False)
+            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
 
             self.score += 1
             # Check the list of collisions.
             for _ in ions_hit_list:
-                self.game_over = True
-                self.sound.play()
+                health = health - 10
+                if health == 0:
+                    self.game_over = True
+                    self.sound.play()
 
             # Boundary check for player leaving helix left side
             if self.player.rect.x <= HELIX_LEFT_BOUNDARY:
@@ -333,6 +363,7 @@ class Game(object):
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
         score_str = "Score: " + str(self.score)
+        health_str = "Health: " + str(health)
         screen.fill(BLACK)
 
         if self.game_over:
@@ -361,10 +392,14 @@ class Game(object):
             text = font.render(score_str, True, WHITE)
             screen.blit(text, [10, SCREEN_HEIGHT / 12])
 
+            font = pygame.font.SysFont('georgiattf', 25, True, False)
+            text = font.render(health_str, True, WHITE)
+            screen.blit(text, [10, SCREEN_HEIGHT / 7])
+
             font = pygame.font.SysFont('georgiattf', 20, False, False)
             text = font.render("Ascend the Helix!", True, WHITE)
             screen.blit(text, [10, SCREEN_HEIGHT / 35])
-
+            Player.do_health(self)
         pygame.display.flip()
 
     # this is the code for the instruction screen
@@ -446,7 +481,6 @@ def main():
 
     # Main game loop
     while not done:
-
         # game.menu_screen()
 
         # Process events (keystrokes, mouse clicks, etc)
