@@ -12,6 +12,8 @@ The goal is to avoid the falling ions and attain the highest score.
 import pygame
 import random
 
+pygame.init()
+
 # --- Global constants ---
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -22,8 +24,8 @@ PURPLE = (75, 0, 130)
 RED = (255, 0, 0)
 BROWN = (77, 38, 0)
 
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 400
+SCREEN_WIDTH = 1400
+SCREEN_HEIGHT = 800
 
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 40
@@ -35,8 +37,26 @@ HELIX_HEIGHT = SCREEN_HEIGHT
 HELIX_RIGHT_BOUNDARY = SCREEN_WIDTH / 1.4
 HELIX_LEFT_BOUNDARY = SCREEN_WIDTH / 4
 
+health = 100.0
+maxHealth = 100
+healthDashes = 10
+
 
 # --- Classes ---
+# class Game_State(pygame):
+# #     def __init__(self):
+# #         super().__init__()
+# #     def start_screen(self):
+# #
+# #     def game_screen(self):
+# #
+# #     def game_over_screen(self):
+# #
+# class StartScreen(pygame.sprite.Sprite):
+#     def __init__(self):
+#         pygame.draw.rect(self.screen, RED, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
+
+
 class Proton(pygame.sprite.Sprite):
     """ This class represents a Proton which the player must dodge. """
     ION_WIDTH = 25
@@ -129,6 +149,7 @@ class Electron(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
     """ This class represents the player. """
+
     change_x = 0
     change_y = 0
     boundary_top = 0
@@ -148,6 +169,18 @@ class Player(pygame.sprite.Sprite):
         # import man climbing image
         self.image = pygame.image.load("man_climbing.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+
+    def do_health(self):
+        dash_convert = int(maxHealth / healthDashes)
+        current_dashes = int(health / dash_convert)
+
+        remaining_health = healthDashes - current_dashes
+        health_display = "-" * current_dashes
+        remaining_display = " " * remaining_health
+        percent = str(int((health / maxHealth) * 100)) + "%"
+
+        print("|" + health_display + remaining_display + "|")  # Print out textbased healthbar
+        print("         " + percent)
 
     def draw(self, screen):
         # blit the image to the screen
@@ -297,18 +330,21 @@ class Game(object):
         This method is run each time through the frame. It
         updates positions and checks for collisions.
         """
+        global health, healthDashes, maxHealth
         if not self.game_over:
             # Move all the sprites
             self.all_sprites_list.update()
 
             # See if the player has collided with anything.
-            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, False)
+            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
 
             self.score += 1
             # Check the list of collisions.
             for _ in ions_hit_list:
-                self.game_over = True
-                self.sound.play()
+                health = health - 10
+                if health == 0:
+                    self.game_over = True
+                    self.sound.play()
 
             # Boundary check for player leaving helix left side
             if self.player.rect.x <= HELIX_LEFT_BOUNDARY:
@@ -333,6 +369,7 @@ class Game(object):
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
         score_str = "Score: " + str(self.score)
+        health_str = "Health: " + str(health)
         screen.fill(BLACK)
 
         if self.game_over:
@@ -355,72 +392,91 @@ class Game(object):
             # image = pygame.transform.scale(image, (175, SCREEN_HEIGHT))
             # screen.blit(image, (0, 0))
 
-            pygame.draw.rect(screen, BLACK, [0, 0, 175, SCREEN_HEIGHT], 0)
+            pygame.draw.rect(screen, BLACK, [0, 0, 250, SCREEN_HEIGHT], 0)
 
             font = pygame.font.SysFont('georgiattf', 25, True, False)
             text = font.render(score_str, True, WHITE)
             screen.blit(text, [10, SCREEN_HEIGHT / 12])
 
+            font = pygame.font.SysFont('georgiattf', 25, True, False)
+            text = font.render(health_str, True, WHITE)
+            screen.blit(text, [10, SCREEN_HEIGHT / 7])
+
             font = pygame.font.SysFont('georgiattf', 20, False, False)
             text = font.render("Ascend the Helix!", True, WHITE)
             screen.blit(text, [10, SCREEN_HEIGHT / 35])
 
+            Player.do_health(self)
+
+            # pygame.draw.rect(screen, RED, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
+
         pygame.display.flip()
 
     # this is the code for the instruction screen
-    # def menu_screen(screen):
-    #     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
-    #     screen = pygame.display.set_mode(size)
-    #
-    #     # Loop until the user clicks the close button.
-    #     done = False
-    #
-    #     # Used to manage how fast the screen updates
-    #     clock = pygame.time.Clock()
-    #
-    #     # This is a font we use to draw text on the screen (size 36)
-    #     font = pygame.font.Font(None, 36)
-    #
-    #     display_instructions = True
-    #     instruction_page = 1
-    #
-    #     # -------- Instruction Page Loop -----------
-    #     while not done and display_instructions:
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.QUIT:
-    #                 done = True
-    #             if event.type == pygame.MOUSEBUTTONDOWN:
-    #                 instruction_page += 1
-    #                 if instruction_page == 3:
-    #                     display_instructions = False
-    #
-    #         # Set the screen background
-    #         screen.fill(BLACK)
-    #
-    #         if instruction_page == 1:
-    #             # Draw instructions, page 1
-    #             # This could also load an image created in another program.
-    #             # That could be both easier and more flexible.
-    #
-    #             text = font.render("Welcome to Ascend the Helix!", True, WHITE)
-    #             screen.blit(text, [10, 10])
-    #
-    #             text = font.render("Page 1", True, WHITE)
-    #             screen.blit(text, [10, 40])
-    #
-    #         if instruction_page == 2:
-    #             # Draw instructions, page 2
-    #             text = font.render("This is Page 2 of the menu screen.", True, WHITE)
-    #             screen.blit(text, [10, 10])
-    #
-    #             text = font.render("Page 2", True, WHITE)
-    #             screen.blit(text, [10, 40])
-    #
-    #         # Limit to 60 frames per second
-    #         clock.tick(60)
-    #
-    #         # Go ahead and update the screen with what we've drawn.
-    #         pygame.display.flip()
+    def start_screen(self, screen):
+        super().__init__()
+        TEXT_SIZE = 36
+        TEXT_X = 10
+        TEXT_Y_LINE1 = 10
+        TEXT_Y_LINE2 = 50
+
+        ATH_text_X = 0
+        ATH_text_Y = 10
+        start_text_X = 275
+        start_text_Y = 200
+        instruction_text_X = 190
+        instruction_text_Y = 300
+
+        size = [SCREEN_WIDTH, SCREEN_HEIGHT]
+        self = pygame.display.set_mode(size)
+
+        # Loop until the user clicks the close button.
+        done = False
+
+        # This is a font we use to draw text on the screen (size 36)
+        font = pygame.font.SysFont('georgiattf', TEXT_SIZE)
+
+        display_instructions = True
+        start_page = 1
+
+        ATH_text = pygame.image.load("ATH.png").convert_alpha()
+        ATH_text = pygame.transform.scale(ATH_text, (700, 100))
+
+        start_text = pygame.image.load("start.png").convert_alpha()
+
+        instruction_text = pygame.image.load("instruction.png").convert_alpha()
+
+        # -------- Instruction Page Loop -----------
+        while not done and display_instructions:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        print("pressed 1")
+                        start_page = 3
+                elif start_page == 4:
+                    display_instructions = False
+
+            # Set the screen background
+            self.fill(BLACK)
+
+            if start_page == 1:
+                screen.blit(ATH_text, (ATH_text_X, ATH_text_Y))
+                screen.blit(start_text, (start_text_X, start_text_Y))
+                screen.blit(instruction_text, (instruction_text_X, instruction_text_Y))
+
+            if start_page == 2:
+                # Draw instructions, page 2
+                text = font.render("This is the instruction page", True, WHITE)
+                self.blit(text, [TEXT_X, TEXT_Y_LINE1])
+
+                text = font.render("How to Play rules go here", True, WHITE)
+                self.blit(text, [TEXT_X, TEXT_Y_LINE2])
+
+            # if start_page == 3:
+
+            pygame.display.flip()
 
 
 def main():
@@ -441,14 +497,15 @@ def main():
     # Create an instance of the Game class
     game = Game()
 
+    # start_screen = StartScreen()
+
     pygame.mixer.music.load('background.mp3')
     pygame.mixer.music.play(-1)
 
+    game.start_screen(screen)
+
     # Main game loop
     while not done:
-
-        # game.menu_screen()
-
         # Process events (keystrokes, mouse clicks, etc)
         done = game.process_events()
 
