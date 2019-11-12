@@ -23,8 +23,7 @@ hp = 10.0
 
 game_state = "menu"
 screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
-
-
+clock = pygame.time.Clock()
 
 class Game(object):
     """ This class represents an instance of the game. If we need to
@@ -63,7 +62,6 @@ class Game(object):
 
     def game_intro(self):
         global game_state, screen
-        clock = pygame.time.Clock()
 
         while game_state == "menu":
             for event in pygame.event.get():
@@ -154,10 +152,20 @@ class Game(object):
 
     def game_over_screen(self):
         global screen, hp, game_state
-
+        print(game_state)
         while game_state == "game_over":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return True
+
+                if event.type == pygame.KEYDOWN:
+
+                    if event.key == pygame.K_SPACE:
+                        hp = 100
+                        game_state = "game"
 
             # draw images on the screen
+            screen.fill(Globals.BLACK)
             logo = pygame.image.load("logo.png").convert_alpha()
             logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
             screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
@@ -166,16 +174,9 @@ class Game(object):
             game_over_text = pygame.transform.scale(game_over_text, (900, 300))
             screen.blit(game_over_text, (250, 300))
 
-            hp = 100
+            pygame.display.flip()
+            clock.tick(60)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return True
-
-                if event.type == pygame.KEYDOWN:
-
-                    if event.key == pygame.K_SPACE:
-                        game_state = "game"
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -304,53 +305,53 @@ class Game(object):
         updates positions and checks for collisions.
         """
         global hp, game_state
-        if game_state == "game":
 
-            # Move all the sprites
-            self.all_sprites_list.update()
-            # See if the player has collided with anything.
-            ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
-            nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
+        # Move all the sprites
+        self.all_sprites_list.update()
+        # See if the player has collided with anything.
+        ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
+        nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
 
-            self.score += 1
+        self.score += 1
 
-            # Check the list of collisions.
-            for _ in ions_hit_list:
-                hp = hp - 10
-                self.create_ions()
-                if hp == 0:
-                    self.sound.play()
+        # Check the list of collisions.
+        for _ in ions_hit_list:
+            hp = hp - 10
+            self.create_ions()
+            if hp == 0:
+                self.sound.play()
+                game_state = "game_over"
 
-            for _ in nucleic_acid_hit_list:
-                hp = hp + 10
-                self.sound2.play()
+        for _ in nucleic_acid_hit_list:
+            hp = hp + 10
+            self.sound2.play()
 
-                if hp >= 100:
-                    hp = 100
+            if hp >= 100:
+                hp = 100
 
-                if len(self.nucleic_acid_list) == 0:
-                    print("Done")
-                    self.create_nucleic_acids()
-           
-            # Boundary check for player leaving helix left side
-            if self.player.rect.x <= Globals.HELIX_LEFT_BOUNDARY:
-                self.player.stop()
-                self.player.rect.x = Globals.HELIX_LEFT_BOUNDARY
+            if len(self.nucleic_acid_list) == 0:
+                print("Done")
+                self.create_nucleic_acids()
 
-            # Boundary check for player leaving helix right side
-            if self.player.rect.x >= Globals.HELIX_RIGHT_BOUNDARY:
-                self.player.stop()
-                self.player.rect.x = Globals.HELIX_RIGHT_BOUNDARY
+        # Boundary check for player leaving helix left side
+        if self.player.rect.x <= Globals.HELIX_LEFT_BOUNDARY:
+            self.player.stop()
+            self.player.rect.x = Globals.HELIX_LEFT_BOUNDARY
 
-            # Boundary check for player leaving helix bottom
-            if self.player.rect.y >= Globals.SCREEN_HEIGHT:
-                self.player.stop()
-                self.player.rect.y = Globals.SCREEN_HEIGHT - Globals.PLAYER_HEIGHT
+        # Boundary check for player leaving helix right side
+        if self.player.rect.x >= Globals.HELIX_RIGHT_BOUNDARY:
+            self.player.stop()
+            self.player.rect.x = Globals.HELIX_RIGHT_BOUNDARY
 
-            # Boundary check for player leaving helix top
-            if self.player.rect.y <= 0:
-                self.player.stop()
-                self.player.rect.y = 0
+        # Boundary check for player leaving helix bottom
+        if self.player.rect.y >= Globals.SCREEN_HEIGHT:
+            self.player.stop()
+            self.player.rect.y = Globals.SCREEN_HEIGHT - Globals.PLAYER_HEIGHT
+
+        # Boundary check for player leaving helix top
+        if self.player.rect.y <= 0:
+            self.player.stop()
+            self.player.rect.y = 0
 
     # def DISPLAY_BACKGROUND(self):
     #     screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
@@ -392,7 +393,7 @@ class Game(object):
 
 def main():
     global screen
-    
+
     """ Main program function. """
     # Initialize Pygame and set up the window
     pygame.init()
@@ -405,7 +406,7 @@ def main():
 
     # Create an instance of the Game class
     game = Game()
-
+    done = False
     pygame.mixer.music.load('background.wav')
     pygame.mixer.music.play(-1)
 
@@ -414,14 +415,14 @@ def main():
 
     # Main game loop
     while game_state == "game":
-        # Process events (keystrokes, mouse clicks, etc)
 
+        # Process events (keystrokes, mouse clicks, etc)
         game.process_events()
 
         # Update object positions, check for collisions
         game.run_logic()
-
         if hp == 0:
+
             game.game_over_screen()
 
         # Draw the current frame
