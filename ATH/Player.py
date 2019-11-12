@@ -62,13 +62,13 @@ class Player(pygame.sprite.Sprite):
         """ Called when the user hits the left arrow. """
         self.change_x = -6
         self.image = pygame.image.load("character_left.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
 
     def go_right(self):
         """ Called when the user hits the right arrow. """
         self.change_x = 6
         self.image = pygame.image.load("character_right.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
 
     def go_down(self):
         """called when the user hits the down arrow"""
@@ -83,4 +83,4 @@ class Player(pygame.sprite.Sprite):
         self.change_x = 0
         self.change_y = 0
         self.image = pygame.image.load("character_stop.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
