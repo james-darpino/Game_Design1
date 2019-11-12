@@ -1,6 +1,5 @@
 import pygame
 import Globals
-import ascend_the_helix
 
 
 class Player(pygame.sprite.Sprite):
@@ -12,7 +11,7 @@ class Player(pygame.sprite.Sprite):
     boundary_left = 0
     boundary_right = 0
     starting_position_x = Globals.SCREEN_WIDTH / 2
-    starting_position_y = Globals.SCREEN_HEIGHT - Globals.PLAYER_HEIGHT
+    starting_position_y = Globals.SCREEN_HEIGHT - 90
     health = 100.0
     maxHealth = 100
     healthDashes = 10
@@ -42,12 +41,8 @@ class Player(pygame.sprite.Sprite):
         print("         " + percent)
 
     def draw(self, screen):
-        # blit the image to the screen
+        # block image transfer the image to the screen
         screen.blit(self.image, self.rect)
-
-    def get_hit(self):
-        health = self.health
-        health = health - 10
 
     def update(self):
         """ Update the player location. """
