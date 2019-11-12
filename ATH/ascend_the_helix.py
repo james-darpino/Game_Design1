@@ -1,10 +1,13 @@
 """
 A. Authors: James D'Arpino and Hannah Youssef
+
 B. Version: Alpha 2.0
+
 C. Description of code: This displays the player within the Helix.
 The player needs to avoid the falling ions (Proton, Neutron, Electron).
 If the player collides with a falling ion, he/she dies and the game is over.
 The goal for the alpha, is to get the highest score.
+
 D. Description of how to play: Press the arrow directionals to move.
 The goal is to avoid the falling ions and attain the highest score.
 """
@@ -18,22 +21,7 @@ import nucleicAcid
 
 hp = 100.0
 
-
-class Menu(object):
-    def __init__(self):
-        TEXT_SIZE = 36
-        TEXT_X = 10
-        TEXT_Y_LINE1 = 10
-        TEXT_Y_LINE2 = 50
-
-        ATH_text_X = 0
-        ATH_text_Y = 10
-        start_text_X = 275
-        start_text_Y = 200
-        instruction_text_X = 190
-        instruction_text_Y = 300
-        size = [Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT]
-        self = pygame.display.set_mode(size)
+game_state = "menu"
 
 
 class Game(object):
@@ -42,7 +30,6 @@ class Game(object):
         class. """
 
     def __init__(self):
-
         """ Constructor. Create all our attributes and initialize
         the game. """
 
@@ -63,6 +50,22 @@ class Game(object):
             cytosine = nucleicAcid.Cytosine()
             guanine = nucleicAcid.Guanine()
             thymine = nucleicAcid.Thymine()
+
+            # create adenine acids
+            adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            adenine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create cytosine acids
+            cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            cytosine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create guanine acids
+            guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            guanine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create thymine acids
+            thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            thymine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
 
             # add adenine to the list
             self.nucleic_acid_list.add(adenine)
@@ -86,22 +89,6 @@ class Game(object):
             proton = Ion.Proton()
             neutron = Ion.Neutron()
             electron = Ion.Electron()
-
-            # create adenine acids
-            adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            adenine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-
-            # create cytosine acids
-            cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            cytosine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-
-            # create guanine acids
-            guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            guanine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-
-            # create thymine acids
-            thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            thymine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
 
             # # create proton ions
             proton.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
@@ -137,6 +124,62 @@ class Game(object):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+    def message_to_screen(msg, color, white):
+        screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
+        font = pygame.font.SysFont("georgiattf", 25)
+        text = font.render("Game Over! An ion broke down your DNA. Click to restart!", True, Globals.WHITE)
+        center_x = (Globals.SCREEN_WIDTH // 2) - (text.get_width() // 2)
+        center_y = (Globals.SCREEN_HEIGHT // 2) - (text.get_height() // 2)
+        screen.blit(text, [center_x, center_y])
+
+    def game_intro(self):
+        global game_state
+        screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
+        clock = pygame.time.Clock()
+
+        TEXT_SIZE = 36
+        TEXT_X = 10
+        TEXT_Y_LINE1 = 10
+        TEXT_Y_LINE2 = 50
+
+        ATH_text_X = 0
+        ATH_text_Y = 10
+        start_text_X = 275
+        start_text_Y = 200
+        instruction_text_X = 190
+        instruction_text_Y = 300
+
+        ATH_text = pygame.image.load("Ascend-The-Helix.png").convert_alpha()
+        ATH_text = pygame.transform.scale(ATH_text, (700, 100))
+
+        start_text = pygame.image.load("1-start.png").convert_alpha()
+
+        instruction_text = pygame.image.load("2-How-To-Play.png").convert_alpha()
+
+        while game_state == "menu":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_c:
+                        game_state = "game"
+                    if event.key == pygame.K_q:
+                        pygame.quit()
+                        quit()
+            screen.fill(Globals.BLACK)
+            screen.blit(ATH_text, (ATH_text_X, ATH_text_Y))
+            screen.blit(start_text, (start_text_X, start_text_Y))
+            screen.blit(instruction_text, (instruction_text_X, instruction_text_Y))
+            start_text
+            instruction_text
+            self.message_to_screen("Start", Globals.WHITE)
+
+
+            pygame.display.flip()
+            clock.tick(60)
+
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
             to close the window. """
@@ -146,26 +189,34 @@ class Game(object):
                 return True
 
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_LEFT:
                     self.player.change_y = 0
                     self.player.go_left()
+
                 if event.key == pygame.K_RIGHT:
                     self.player.change_y = 0
                     self.player.go_right()
+
                 if event.key == pygame.K_UP:
                     self.player.change_x = 0
                     self.player.go_up()
+
                 if event.key == pygame.K_DOWN:
                     self.player.change_x = 0
                     self.player.go_down()
 
             if event.type == pygame.KEYUP:
+
                 if event.key == pygame.K_LEFT and self.player.change_x < 0:
                     self.player.stop()
+
                 if event.key == pygame.K_RIGHT and self.player.change_x > 0:
                     self.player.stop()
+
                 if event.key == pygame.K_UP and self.player.change_y < 0:
                     self.player.stop()
+
                 if event.key == pygame.K_DOWN and self.player.change_y > 0:
                     self.player.stop()
 
@@ -181,7 +232,7 @@ class Game(object):
         updates positions and checks for collisions.
         """
 
-        if not self.game_over:
+        if game_state == "game":
             global hp
             # Move all the sprites
             self.all_sprites_list.update()
@@ -195,6 +246,7 @@ class Game(object):
             for _ in ions_hit_list:
                 hp = hp - 10
                 print(hp)
+
                 if hp == 0:
                     self.game_over = True
                     self.sound.play()
@@ -202,6 +254,7 @@ class Game(object):
             for _ in nucleic_acid_hit_list:
                 hp = hp + 10
                 self.sound2.play()
+
                 if hp >= 100:
                     hp = 100
 
@@ -242,7 +295,7 @@ class Game(object):
 
         if not self.game_over:
             # image = pygame.image.load("blue_helix.png")
-            # image = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            # image = pygame.transform.scale(image, (Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
             # screen.blit(image, (0, 0))
 
             image = pygame.image.load("pairs.png").convert_alpha()
@@ -268,7 +321,7 @@ class Game(object):
             font = pygame.font.SysFont('georgiattf', 20, False, False)
             text = font.render("Ascend the Helix!", True, Globals.WHITE)
             screen.blit(text, [10, Globals.SCREEN_HEIGHT / 35])
-            # Player.do_health(self)
+
         pygame.display.flip()
 
 
@@ -284,7 +337,6 @@ def main():
     pygame.mouse.set_visible(True)
 
     # Create our objects and set the data
-    done = False
     clock = pygame.time.Clock()
 
     # Create an instance of the Game class
@@ -292,13 +344,17 @@ def main():
 
     pygame.mixer.music.load('background.mp3')
     pygame.mixer.music.play(-1)
+    game.game_intro()
 
     # Main game loop
-    while not done:
-        # game.menu_screen()
+    while game_state == "game":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
         # Process events (keystrokes, mouse clicks, etc)
-        done = game.process_events()
+        game.process_events()
 
         # Update object positions, check for collisions
         game.run_logic()
