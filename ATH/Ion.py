@@ -25,7 +25,7 @@ class Proton(pygame.sprite.Sprite):
 
     def update(self):
         """ Automatically called when we need to move the ion. """
-        self.rect.y += 2
+        self.rect.y += 3
 
         if self.rect.y > Globals.SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()

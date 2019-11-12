@@ -28,18 +28,6 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("character_stop.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (75, 75))
 
-    def do_health(self):
-        dash_convert = int(self.maxHealth / self.healthDashes)
-        current_dashes = int(self.health / dash_convert)
-
-        remaining_health = self.healthDashes - current_dashes
-        health_display = "-" * current_dashes
-        remaining_display = " " * remaining_health
-        percent = str(int((self.health / self.maxHealth) * 100)) + "%"
-
-        print("|" + health_display + remaining_display + "|")  # Print out textbased healthbar
-        print("         " + percent)
-
     def draw(self, screen):
         # block image transfer the image to the screen
         screen.blit(self.image, self.rect)
@@ -57,13 +45,14 @@ class Player(pygame.sprite.Sprite):
         """ Called when the user hits the left arrow. """
         self.change_x = -6
         self.image = pygame.image.load("character_left.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (75, 75))
 
+    # screen.blit(start_text, (Globals.START_X, Globals.START_Y))
     def go_right(self):
         """ Called when the user hits the right arrow. """
         self.change_x = 6
         self.image = pygame.image.load("character_right.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (75, 75))
 
     def go_down(self):
         """called when the user hits the down arrow"""
@@ -78,4 +67,4 @@ class Player(pygame.sprite.Sprite):
         self.change_x = 0
         self.change_y = 0
         self.image = pygame.image.load("character_stop.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (75, 75)).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (75, 75))

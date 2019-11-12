@@ -114,3 +114,4 @@ class Thymine(pygame.sprite.Sprite):
 
         if self.rect.y > Globals.SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()
+

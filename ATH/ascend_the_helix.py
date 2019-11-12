@@ -24,7 +24,7 @@ import Ion
 import nucleicAcid
 
 hp = 100
-
+score = 0
 game_state = "menu"
 screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
@@ -47,13 +47,57 @@ def game_over_screen():
 
         # draw images on the screen
         screen.fill(Globals.BLACK)
-        logo = pygame.image.load("logo.png").convert_alpha()
-        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
-        screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
+
+        background_game_over = pygame.image.load("background.png").convert_alpha()
+        background_game_over = pygame.transform.scale(background_game_over, (Globals.SCREEN_WIDTH + 300,
+                                                                             Globals.SCREEN_HEIGHT))
+        screen.blit(background_game_over, (-200, 0))
+
+        character_death = pygame.image.load("character_death.png").convert_alpha()
+        character_death = pygame.transform.scale(character_death, (300, 300))
+        screen.blit(character_death, (550, 250))
+
+        grave = pygame.image.load("rip.png").convert_alpha()
+        grave = pygame.transform.scale(grave, (150, 200))
+        screen.blit(grave, (900, 350))
 
         game_over_text = pygame.image.load("game_over.png").convert_alpha()
         game_over_text = pygame.transform.scale(game_over_text, (900, 300))
-        screen.blit(game_over_text, (250, 300))
+        screen.blit(game_over_text, (250, 75))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+
+def victory_screen():
+    global screen, hp, game_state
+
+    while game_state == "victory":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return True
+
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_SPACE:
+                    hp = 100
+                    quit()
+
+        # draw images on the screen
+        screen.fill(Globals.BLACK)
+
+        background_victory = pygame.image.load("classroom.jpg").convert_alpha()
+        background_victory = pygame.transform.scale(background_victory, (Globals.SCREEN_WIDTH + 300,
+                                                                         Globals.SCREEN_HEIGHT))
+        screen.blit(background_victory, (-200, 0))
+
+        frizzle = pygame.image.load("ms_frizzle.png").convert_alpha()
+        frizzle = pygame.transform.scale(frizzle, (300, 300))
+        screen.blit(frizzle, (300, 350))
+
+        win = pygame.image.load("win.png").convert_alpha()
+        win = pygame.transform.scale(win, (900, 300))
+        screen.blit(win, (250, 75))
 
         pygame.display.flip()
         clock.tick(60)
@@ -78,6 +122,10 @@ def how_to_play_screen():
         screen.fill(Globals.BLACK)
 
         # draw images on the screen
+        background = pygame.image.load("background.png").convert_alpha()
+        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        screen.blit(background, (-200, 0))
+
         logo = pygame.image.load("logo.png").convert_alpha()
         logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
         screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
@@ -112,6 +160,45 @@ def how_to_play_screen():
         clock.tick(60)
 
 
+def credits_screen():
+    global game_state, screen
+
+    while game_state == "credits":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    game_state = "menu"
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+        screen.fill(Globals.BLACK)
+
+        # draw images on the screen
+        background = pygame.image.load("background.png").convert_alpha()
+        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        screen.blit(background, (-200, 0))
+
+        logo = pygame.image.load("logo.png").convert_alpha()
+        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
+        screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
+
+        back_button = pygame.image.load("back.png").convert_alpha()
+        back_button = pygame.transform.scale(back_button, (Globals.BACK_BUTTON_WIDTH, Globals.BACK_BUTTON_HEIGHT))
+        screen.blit(back_button, (Globals.BACK_BUTTON_X, Globals.BACK_BUTTON_Y))
+
+        author = pygame.image.load("authors.png").convert_alpha()
+        author = pygame.transform.scale(author, (600, 200))
+        screen.blit(author, (Globals.HOW_TO_PLAY_X - 200, Globals.HOW_TO_PLAY_Y + 100))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+
 def game_intro():
     global game_state, screen
 
@@ -124,16 +211,24 @@ def game_intro():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     game_state = "game"
+
                 if event.key == pygame.K_q:
                     pygame.quit()
                     quit()
                 if event.key == pygame.K_2:
                     game_state = "how_to_play"
                     how_to_play_screen()
+                if event.key == pygame.K_3:
+                    game_state = "credits"
+                    credits_screen()
 
         screen.fill(Globals.BLACK)
 
         # draw images on the screen
+        background = pygame.image.load("background.png").convert_alpha()
+        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        screen.blit(background, (-200, 0))
+
         logo = pygame.image.load("logo.png").convert_alpha()
         logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
         screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
@@ -146,6 +241,10 @@ def game_intro():
         how_to_play_text = pygame.transform.scale(how_to_play_text, (Globals.HOW_TO_PLAY_WIDTH,
                                                                      Globals.HOW_TO_PLAY_HEIGHT))
         screen.blit(how_to_play_text, (Globals.HOW_TO_PLAY_X, Globals.HOW_TO_PLAY_Y))
+
+        credits_page = pygame.image.load("credits.png").convert_alpha()
+        credits_page = pygame.transform.scale(credits_page, (Globals.HOW_TO_PLAY_WIDTH, Globals.HOW_TO_PLAY_HEIGHT))
+        screen.blit(credits_page, (Globals.HOW_TO_PLAY_X - 10, Globals.HOW_TO_PLAY_Y + 100))
 
         pygame.display.flip()
         clock.tick(60)
@@ -160,10 +259,10 @@ class Game(object):
         """ Constructor. Create all our attributes and initialize
         the game. """
 
-        # add the laser sound (laser5.ogg file)
+        # add the sound files
         self.sound = pygame.mixer.Sound("lose.ogg")
         self.sound2 = pygame.mixer.Sound("collect.wav")
-        self.score = 0
+
         self.game_over = False
 
         # Create sprite lists
@@ -205,7 +304,7 @@ class Game(object):
 
         # create guanine acids
         guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        guanine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+        guanine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLIEIC_ACID_WIDTH)
 
         # create thymine acids
         thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
@@ -311,7 +410,7 @@ class Game(object):
         This method is run each time through the frame. It
         updates positions and checks for collisions.
         """
-        global hp, game_state
+        global hp, game_state, score
 
         # Move all the sprites
         self.all_sprites_list.update()
@@ -320,8 +419,10 @@ class Game(object):
         ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
         nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
 
-        self.score += 5
-
+        score += 50
+        if score >= 50000:
+            print(score)
+            game_state = "victory"
         # Check the list of collisions.
         for _ in ions_hit_list:
             hp = hp - 20
@@ -332,8 +433,11 @@ class Game(object):
                 game_state = "game_over"
 
         for _ in nucleic_acid_hit_list:
-            hp = hp + 10
+            hp = hp + 20
             self.sound2.play()
+
+            if hp > 100:
+                score += 1000
 
             if hp >= 100:
                 hp = 100
@@ -361,19 +465,12 @@ class Game(object):
             self.player.stop()
             self.player.rect.y = 0
 
-    # def DISPLAY_BACKGROUND(self):
-    #     screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
-    #     background = pygame.image.load("Space 2.png").convert_alpha()
-    #     background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
-    #     screen.blit(background, (-200, 0))
-
     def display_frame(self, surface):
         """ Display everything to the screen for the game. """
         global hp, game_state
-        score_str = "Score: " + str(self.score)
+        score_str = "Score: " + str(score)
         health_str = "Health: " + str(hp)
         surface.fill(Globals.BLACK)
-        # self.DISPLAY_BACKGROUND()
 
         if game_state == "game":
             image = pygame.image.load("pairs.png").convert_alpha()
@@ -400,7 +497,7 @@ class Game(object):
 
 
 def main():
-    global screen
+    global screen, score
 
     """ Main program function. """
     # Initialize Pygame and set up the window
@@ -426,6 +523,9 @@ def main():
         game.run_logic()
         if hp == 0:
             game_over_screen()
+
+        if score <= 50000:
+            victory_screen()
 
         # Draw the current frame
         game.display_frame(screen)
