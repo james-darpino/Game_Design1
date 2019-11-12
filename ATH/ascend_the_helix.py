@@ -262,6 +262,7 @@ class Game(object):
         # add the sound files
         self.sound = pygame.mixer.Sound("lose.ogg")
         self.sound2 = pygame.mixer.Sound("collect.wav")
+        self.sound3 = pygame.mixer.Sound("WAHOO.wav")
 
         self.game_over = False
 
@@ -421,8 +422,9 @@ class Game(object):
 
         score += 50
         if score >= 50000:
-            print(score)
+            self.sound3.play()
             game_state = "victory"
+
         # Check the list of collisions.
         for _ in ions_hit_list:
             hp = hp - 20
