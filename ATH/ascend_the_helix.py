@@ -31,7 +31,7 @@ clock = pygame.time.Clock()
 
 
 def game_over_screen():
-    global screen, hp, game_state
+    global screen, hp, game_state, score
 
     while game_state == "game_over":
         for event in pygame.event.get():
@@ -42,6 +42,7 @@ def game_over_screen():
 
                 if event.key == pygame.K_SPACE:
                     hp = 100
+                    score = 0
                     game_state = "game"
                     main()
 
@@ -70,7 +71,7 @@ def game_over_screen():
 
 
 def victory_screen():
-    global screen, hp, game_state
+    global screen, hp, game_state, score
 
     while game_state == "victory":
         for event in pygame.event.get():
@@ -81,6 +82,7 @@ def victory_screen():
 
                 if event.key == pygame.K_SPACE:
                     hp = 100
+                    score = 0
                     quit()
 
         # draw images on the screen
@@ -420,7 +422,7 @@ class Game(object):
         ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
         nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
 
-        score += 50
+        score += 10
         if score >= 50000:
             self.sound3.play()
             game_state = "victory"
