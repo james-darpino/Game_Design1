@@ -14,8 +14,26 @@ import random
 import Globals
 import Player
 import Ion
+import nucleicAcid
 
 hp = 100.0
+
+
+class Menu(object):
+    def __init__(self):
+        TEXT_SIZE = 36
+        TEXT_X = 10
+        TEXT_Y_LINE1 = 10
+        TEXT_Y_LINE2 = 50
+
+        ATH_text_X = 0
+        ATH_text_Y = 10
+        start_text_X = 275
+        start_text_Y = 200
+        instruction_text_X = 190
+        instruction_text_Y = 300
+        size = [Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT]
+        self = pygame.display.set_mode(size)
 
 
 class Game(object):
@@ -30,13 +48,37 @@ class Game(object):
 
         # add the laser sound (laser5.ogg file)
         self.sound = pygame.mixer.Sound("lose.ogg")
-
+        self.sound2 = pygame.mixer.Sound("collect.wav")
         self.score = 0
         self.game_over = False
 
         # Create sprite lists
         self.ion_list = pygame.sprite.Group()
+        self.nucleic_acid_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
+
+        # Create the nucleic sprites
+        for i in range(1):
+            adenine = nucleicAcid.Adenine()
+            cytosine = nucleicAcid.Cytosine()
+            guanine = nucleicAcid.Guanine()
+            thymine = nucleicAcid.Thymine()
+
+            # add adenine to the list
+            self.nucleic_acid_list.add(adenine)
+            self.all_sprites_list.add(adenine)
+
+            # add cytosine to the list
+            self.nucleic_acid_list.add(cytosine)
+            self.all_sprites_list.add(cytosine)
+
+            # add guanine to the list
+            self.nucleic_acid_list.add(guanine)
+            self.all_sprites_list.add(guanine)
+
+            # add thymine to the list
+            self.nucleic_acid_list.add(thymine)
+            self.all_sprites_list.add(thymine)
 
         # Create the ion sprites
         for i in range(10):
@@ -45,20 +87,33 @@ class Game(object):
             neutron = Ion.Neutron()
             electron = Ion.Electron()
 
-            # create proton ions
+            # create adenine acids
+            adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            adenine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create cytosine acids
+            cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            cytosine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create guanine acids
+            guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            guanine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # create thymine acids
+            thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+            thymine.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+
+            # # create proton ions
             proton.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            proton.rect.x = random.randrange(Globals.HELIX_WIDTH - Globals.ION_WIDTH)
-            proton.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+            proton.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
 
             # create neutron ions
             neutron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            neutron.rect.x = random.randrange(Globals.HELIX_WIDTH - Globals.ION_WIDTH)
-            neutron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+            neutron.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
 
             # create electron ions
             electron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-            electron.rect.x = random.randrange(Globals.HELIX_WIDTH - Globals.ION_WIDTH)
-            electron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+            electron.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
 
             # add protons to the list
             self.ion_list.add(proton)
@@ -132,6 +187,7 @@ class Game(object):
             self.all_sprites_list.update()
             # See if the player has collided with anything.
             ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
+            nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
 
             self.score += 1
 
@@ -142,6 +198,12 @@ class Game(object):
                 if hp == 0:
                     self.game_over = True
                     self.sound.play()
+
+            for _ in nucleic_acid_hit_list:
+                hp = hp + 10
+                self.sound2.play()
+                if hp >= 100:
+                    hp = 100
 
             # Boundary check for player leaving helix left side
             if self.player.rect.x <= Globals.HELIX_LEFT_BOUNDARY:
@@ -171,7 +233,6 @@ class Game(object):
         screen.fill(Globals.BLACK)
 
         if self.game_over:
-            # font = pygame.font.Font("Serif", 25)
             font = pygame.font.SysFont("georgiattf", 25)
             text = font.render("Game Over! An ion broke down your DNA. Click to restart!", True, Globals.WHITE)
             center_x = (Globals.SCREEN_WIDTH // 2) - (text.get_width() // 2)
