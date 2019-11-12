@@ -169,62 +169,59 @@ class Game(object):
                         pygame.quit()
                         quit()
             screen.fill(Globals.BLACK)
-            screen.blit(ATH_text, (ATH_text_X, ATH_text_Y))
-            screen.blit(start_text, (start_text_X, start_text_Y))
-            screen.blit(instruction_text, (instruction_text_X, instruction_text_Y))
-            start_text
-            instruction_text
-            self.message_to_screen("Start", Globals.WHITE)
-
-
             pygame.display.flip()
             clock.tick(60)
 
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
             to close the window. """
+        while game_state == "game":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return True
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return True
+                if event.type == pygame.KEYDOWN:
 
-            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        pygame.quit()
+                        quit()
 
-                if event.key == pygame.K_LEFT:
-                    self.player.change_y = 0
-                    self.player.go_left()
+                    if event.key == pygame.K_LEFT:
+                        self.player.change_y = 0
+                        self.player.go_left()
+                        print("Hi")
 
-                if event.key == pygame.K_RIGHT:
-                    self.player.change_y = 0
-                    self.player.go_right()
+                    if event.key == pygame.K_RIGHT:
+                        self.player.change_y = 0
+                        self.player.go_right()
 
-                if event.key == pygame.K_UP:
-                    self.player.change_x = 0
-                    self.player.go_up()
+                    if event.key == pygame.K_UP:
+                        self.player.change_x = 0
+                        self.player.go_up()
 
-                if event.key == pygame.K_DOWN:
-                    self.player.change_x = 0
-                    self.player.go_down()
+                    if event.key == pygame.K_DOWN:
+                        self.player.change_x = 0
+                        self.player.go_down()
 
-            if event.type == pygame.KEYUP:
+                if event.type == pygame.KEYUP:
 
-                if event.key == pygame.K_LEFT and self.player.change_x < 0:
-                    self.player.stop()
+                    if event.key == pygame.K_LEFT and self.player.change_x < 0:
+                        self.player.stop()
 
-                if event.key == pygame.K_RIGHT and self.player.change_x > 0:
-                    self.player.stop()
+                    if event.key == pygame.K_RIGHT and self.player.change_x > 0:
+                        self.player.stop()
 
-                if event.key == pygame.K_UP and self.player.change_y < 0:
-                    self.player.stop()
+                    if event.key == pygame.K_UP and self.player.change_y < 0:
+                        self.player.stop()
 
-                if event.key == pygame.K_DOWN and self.player.change_y > 0:
-                    self.player.stop()
+                    if event.key == pygame.K_DOWN and self.player.change_y > 0:
+                        self.player.stop()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.game_over:
-                    self.__init__()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.game_over:
+                        self.__init__()
 
-        return False
+            return False
 
     def run_logic(self):
         """
@@ -348,12 +345,8 @@ def main():
 
     # Main game loop
     while game_state == "game":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
         # Process events (keystrokes, mouse clicks, etc)
+
         game.process_events()
 
         # Update object positions, check for collisions
@@ -366,9 +359,6 @@ def main():
         clock.tick(60)
 
         pygame.display.flip()
-
-    # Close window and exit
-    pygame.quit()
 
 
 # Call the main function, start up the game
