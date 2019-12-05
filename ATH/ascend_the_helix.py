@@ -29,6 +29,7 @@ game_state = "menu"
 screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
+print(pygame.font.get_fonts())
 
 def game_over_screen():
     global screen, hp, game_state, score
@@ -485,17 +486,49 @@ class Game(object):
 
             pygame.draw.rect(surface, Globals.BLACK, [0, 0, 175, Globals.SCREEN_HEIGHT], 0)
 
-            font = pygame.font.SysFont('georgiattf', 25, True, False)
-            text = font.render(score_str, True, Globals.WHITE)
-            surface.blit(text, [10, Globals.SCREEN_WIDTH / 18])
+            # "Your Statistics" rendered text
+            font = pygame.font.SysFont('dubai', 40, True, False)
+            text = font.render("Your Statistics:", True, Globals.WHITE)
+            surface.blit(text, [10, Globals.SCREEN_HEIGHT - 780])
 
-            font = pygame.font.SysFont('georgiattf', 25, True, False)
-            text = font.render(health_str, True, Globals.WHITE)
-            surface.blit(text, [10, Globals.SCREEN_HEIGHT / 15])
+            # "Health: " out of 100 rendered text
+            # if health gets below 40, make text red, bold, and have exclamation points
+            if 0 <= hp <= 40:
+                font = pygame.font.SysFont('dubai', 35, True, False)
+                text = font.render(health_str + " / 100 !!!", True, Globals.RED)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
 
-            font = pygame.font.SysFont('georgiattf', 20, False, False)
-            text = font.render("Ascend the Helix!", True, Globals.WHITE)
-            surface.blit(text, [10, Globals.SCREEN_HEIGHT / 35])
+                # words of encouragement in corresponding color
+                font = pygame.font.SysFont('dubai', 20, False, False)
+                text = font.render("Oh no! Catch more base pairs!", False, Globals.RED)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+
+            # if health is 60, make text yellow
+            elif hp == 60:
+                font = pygame.font.SysFont('dubai', 35, False, False)
+                text = font.render(health_str + " / 100", True, Globals.YELLOW)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
+
+                # words of encouragement in corresponding color
+                font = pygame.font.SysFont('dubai', 20, False, False)
+                text = font.render("Just a little more, you can do it!", False, Globals.YELLOW)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+
+            # if health is 80 or above, make text green
+            elif 80 <= hp <= 100:
+                font = pygame.font.SysFont('dubai', 35, False, False)
+                text = font.render(health_str + " / 100", True, Globals.GREEN)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
+
+                # words of encouragement in corresponding color
+                font = pygame.font.SysFont('dubai', 20, False, False)
+                text = font.render("Wow! You're doing great!", False, Globals.GREEN)
+                surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+
+            # "Score: " rendered text
+            font = pygame.font.SysFont('dubai', 35, False, False)
+            text = font.render(score_str, True, Globals.BLUE)
+            surface.blit(text, [10, Globals.SCREEN_HEIGHT - 645])
 
         pygame.display.flip()
 
