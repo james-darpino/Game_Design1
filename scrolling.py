@@ -14,6 +14,7 @@ HELIX_HEIGHT = 512
 # helix actual height is 800
 # helix actual dimensions are 982x800
 # helix width (boundaries) should be 610 (350 to 960)
+# helix only dimensions are 610x800
 
 BLACK = (255, 255, 255)
 RED = (255, 0, 0)
