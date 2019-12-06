@@ -1,19 +1,19 @@
 """
 A. Authors: James D'Arpino and Hannah Youssef
 
-B. Version: Patch 3.0
+B. Version: Beta 5.0
 
 C. Description of code: This displays the player within the Helix.
 The player needs to avoid the falling ions (Proton, Neutron, Electron).
 If the player collides with a falling ion, he/she loses 10 health points.
 Once the player gets to 0 health points they die. In order to survive,
-the player must collect nucleic acids (Adenine, Guanine, Thymine, and Cytosine).
+the player must collect nucleic acids (Adenine, Guanine, Thymine, & Cytosine).
 Each acid collected restores 10 health points. The goal is to survive as long
-as possible and keep trying to beat your highest score.
+as possible and keep trying to beat your highest score. A score of 50,000 wins.
 
 D. Description of how to play: Press the arrow directionals to move.
 Avoid the falling ions, while collecting the nucleic acids. Try to Survive for
-as long as possible
+as long as possible. Reach a score of 50,000 to win.
 """
 
 import pygame
@@ -22,18 +22,12 @@ import Globals
 import Player
 import Ion
 import nucleicAcid
-import Helix
-
-import sys
-from pygame.locals import *
 
 hp = 100
 score = 0
 game_state = "menu"
 screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-
-print(pygame.font.get_fonts())
 
 
 def game_over_screen():
@@ -55,12 +49,16 @@ def game_over_screen():
         # draw images on the screen
         screen.fill(Globals.BLACK)
 
-        background_game_over = pygame.image.load("background.png").convert_alpha()
-        background_game_over = pygame.transform.scale(background_game_over, (Globals.SCREEN_WIDTH + 300,
-                                                                             Globals.SCREEN_HEIGHT))
+        background_game_over = \
+            pygame.image.load("background.png").convert_alpha()
+        background_game_over = \
+            pygame.transform.scale(background_game_over,
+                                   (Globals.SCREEN_WIDTH + 300,
+                                    Globals.SCREEN_HEIGHT))
         screen.blit(background_game_over, (-200, 0))
 
-        character_death = pygame.image.load("character_death.png").convert_alpha()
+        character_death = \
+            pygame.image.load("character_death.png").convert_alpha()
         character_death = pygame.transform.scale(character_death, (300, 300))
         screen.blit(character_death, (550, 250))
 
@@ -95,8 +93,10 @@ def victory_screen():
         screen.fill(Globals.BLACK)
 
         background_victory = pygame.image.load("classroom.jpg").convert_alpha()
-        background_victory = pygame.transform.scale(background_victory, (Globals.SCREEN_WIDTH + 300,
-                                                                         Globals.SCREEN_HEIGHT))
+        background_victory = \
+            pygame.transform.scale(background_victory,
+                                   (Globals.SCREEN_WIDTH + 300,
+                                    Globals.SCREEN_HEIGHT))
         screen.blit(background_victory, (-200, 0))
 
         frizzle = pygame.image.load("ms_frizzle.png").convert_alpha()
@@ -127,42 +127,58 @@ def how_to_play_screen():
                     pygame.quit()
                     quit()
 
+        # draw images on the screen
         screen.fill(Globals.BLACK)
 
-        # draw images on the screen
         background = pygame.image.load("background.png").convert_alpha()
-        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        background = \
+            pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300,
+                                                Globals.SCREEN_HEIGHT))
         screen.blit(background, (-200, 0))
 
         logo = pygame.image.load("logo.png").convert_alpha()
-        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
+        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH,
+                                             Globals.LOGO_HEIGHT))
         screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
 
         rules = pygame.image.load("rules.png").convert_alpha()
-        rules = pygame.transform.scale(rules, (Globals.RULES_WIDTH, Globals.RULES_HEIGHT))
+        rules = pygame.transform.scale(rules, (Globals.RULES_WIDTH,
+                                               Globals.RULES_HEIGHT))
         screen.blit(rules, (Globals.RULES_X, Globals.RULES_Y))
 
         move_rule = pygame.image.load("movement_rule.png").convert_alpha()
-        move_rule = pygame.transform.scale(move_rule, (Globals.MOVE_RULE_WIDTH, Globals.MOVE_RULE_HEIGHT))
+        move_rule = pygame.transform.scale(move_rule,
+                                           (Globals.MOVE_RULE_WIDTH,
+                                            Globals.MOVE_RULE_HEIGHT))
         screen.blit(move_rule, (Globals.MOVE_RULE_X, Globals.MOVE_RULE_Y))
 
         ion_rule = pygame.image.load("ion_rule.png").convert_alpha()
-        ion_rule = pygame.transform.scale(ion_rule, (Globals.ION_RULE_WIDTH, Globals.ION_RULE_HEIGHT))
+        ion_rule = pygame.transform.scale(ion_rule,
+                                          (Globals.ION_RULE_WIDTH,
+                                           Globals.ION_RULE_HEIGHT))
         screen.blit(ion_rule, (Globals.ION_RULE_X, Globals.ION_RULE_Y))
 
-        hp_regen_rule = pygame.image.load("health_regen_rule.png").convert_alpha()
-        hp_regen_rule = pygame.transform.scale(hp_regen_rule, (Globals.HP_REGEN_RULE_WIDTH,
-                                                               Globals.HP_REGEN_RULE_HEIGHT))
-        screen.blit(hp_regen_rule, (Globals.HP_REGEN_RULE_X, Globals.HP_REGEN_RULE_Y))
+        hp_regen_rule = \
+            pygame.image.load("health_regen_rule.png").convert_alpha()
+        hp_regen_rule = pygame.transform.scale(hp_regen_rule,
+                                               (Globals.HP_REGEN_RULE_WIDTH,
+                                                Globals.HP_REGEN_RULE_HEIGHT))
+        screen.blit(hp_regen_rule, (Globals.HP_REGEN_RULE_X,
+                                    Globals.HP_REGEN_RULE_Y))
 
         survive_rule = pygame.image.load("survive_rule.png").convert_alpha()
         survive_rule = pygame.transform.scale(survive_rule,
-                                              (Globals.SURVIVE_RULE_WIDTH, Globals.SURVIVE_RULE_HEIGHT))
-        screen.blit(survive_rule, (Globals.SURVIVE_RULE_X, Globals.SURVIVE_RULE_Y))
+                                              (Globals.SURVIVE_RULE_WIDTH,
+                                               Globals.SURVIVE_RULE_HEIGHT))
+        screen.blit(survive_rule, (Globals.SURVIVE_RULE_X,
+                                   Globals.SURVIVE_RULE_Y))
 
         back_button = pygame.image.load("back.png").convert_alpha()
-        back_button = pygame.transform.scale(back_button, (Globals.BACK_BUTTON_WIDTH, Globals.BACK_BUTTON_HEIGHT))
-        screen.blit(back_button, (Globals.BACK_BUTTON_X, Globals.BACK_BUTTON_Y))
+        back_button = pygame.transform.scale(back_button,
+                                             (Globals.BACK_BUTTON_WIDTH,
+                                              Globals.BACK_BUTTON_HEIGHT))
+        screen.blit(back_button, (Globals.BACK_BUTTON_X,
+                                  Globals.BACK_BUTTON_Y))
 
         pygame.display.flip()
         clock.tick(60)
@@ -184,24 +200,31 @@ def credits_screen():
                     pygame.quit()
                     quit()
 
+        # draw images on the screen
         screen.fill(Globals.BLACK)
 
-        # draw images on the screen
         background = pygame.image.load("background.png").convert_alpha()
-        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        background = pygame.transform.scale(background,
+                                            (Globals.SCREEN_WIDTH + 300,
+                                             Globals.SCREEN_HEIGHT))
         screen.blit(background, (-200, 0))
 
         logo = pygame.image.load("logo.png").convert_alpha()
-        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
+        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH,
+                                             Globals.LOGO_HEIGHT))
         screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
 
         back_button = pygame.image.load("back.png").convert_alpha()
-        back_button = pygame.transform.scale(back_button, (Globals.BACK_BUTTON_WIDTH, Globals.BACK_BUTTON_HEIGHT))
-        screen.blit(back_button, (Globals.BACK_BUTTON_X, Globals.BACK_BUTTON_Y))
+        back_button = pygame.transform.scale(back_button,
+                                             (Globals.BACK_BUTTON_WIDTH,
+                                              Globals.BACK_BUTTON_HEIGHT))
+        screen.blit(back_button, (Globals.BACK_BUTTON_X,
+                                  Globals.BACK_BUTTON_Y))
 
         author = pygame.image.load("authors.png").convert_alpha()
         author = pygame.transform.scale(author, (600, 200))
-        screen.blit(author, (Globals.HOW_TO_PLAY_X - 200, Globals.HOW_TO_PLAY_Y + 100))
+        screen.blit(author, (Globals.HOW_TO_PLAY_X - 200,
+                             Globals.HOW_TO_PLAY_Y + 100))
 
         pygame.display.flip()
         clock.tick(60)
@@ -230,193 +253,123 @@ def game_intro():
                     game_state = "credits"
                     credits_screen()
 
+        # draw images on the screen
         screen.fill(Globals.BLACK)
 
-        # draw images on the screen
         background = pygame.image.load("background.png").convert_alpha()
-        background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
+        background = pygame.transform.scale(background,
+                                            (Globals.SCREEN_WIDTH + 300,
+                                             Globals.SCREEN_HEIGHT))
         screen.blit(background, (-200, 0))
 
         logo = pygame.image.load("logo.png").convert_alpha()
-        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH, Globals.LOGO_HEIGHT))
+        logo = pygame.transform.scale(logo, (Globals.LOGO_WIDTH,
+                                             Globals.LOGO_HEIGHT))
         screen.blit(logo, (Globals.LOGO_X, Globals.LOGO_Y))
 
         start_text = pygame.image.load("start.png").convert_alpha()
-        start_text = pygame.transform.scale(start_text, (Globals.START_WIDTH, Globals.START_HEIGHT))
+        start_text = pygame.transform.scale(start_text,
+                                            (Globals.START_WIDTH,
+                                             Globals.START_HEIGHT))
         screen.blit(start_text, (Globals.START_X, Globals.START_Y))
 
         how_to_play_text = pygame.image.load("how_to_play.png").convert_alpha()
-        how_to_play_text = pygame.transform.scale(how_to_play_text, (Globals.HOW_TO_PLAY_WIDTH,
-                                                                     Globals.HOW_TO_PLAY_HEIGHT))
-        screen.blit(how_to_play_text, (Globals.HOW_TO_PLAY_X, Globals.HOW_TO_PLAY_Y))
+        how_to_play_text = pygame.transform.scale(how_to_play_text,
+                                                  (Globals.HOW_TO_PLAY_WIDTH,
+                                                   Globals.HOW_TO_PLAY_HEIGHT))
+        screen.blit(how_to_play_text, (Globals.HOW_TO_PLAY_X,
+                                       Globals.HOW_TO_PLAY_Y))
 
         credits_page = pygame.image.load("credits.png").convert_alpha()
-        credits_page = pygame.transform.scale(credits_page, (Globals.HOW_TO_PLAY_WIDTH, Globals.HOW_TO_PLAY_HEIGHT))
-        screen.blit(credits_page, (Globals.HOW_TO_PLAY_X - 10, Globals.HOW_TO_PLAY_Y + 100))
+        credits_page = pygame.transform.scale(credits_page,
+                                              (Globals.HOW_TO_PLAY_WIDTH,
+                                               Globals.HOW_TO_PLAY_HEIGHT))
+        screen.blit(credits_page, (Globals.HOW_TO_PLAY_X - 10,
+                                   Globals.HOW_TO_PLAY_Y + 100))
 
         pygame.display.flip()
         clock.tick(60)
+
 
 def display_text(surface):
     global hp, game_state
     score_str = "Score: " + str(score)
     health_str = "Health: " + str(hp)
 
-    # # centered "ASCEND THE HELIX" rendered text
-    # # BOTTOM RIGHT
-    # font = pygame.font.SysFont(Globals.ATH_TEXT_FONT, Globals.ATH_TEXT_SIZE, True, False)
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
-    #
-    # # UPPER LEFT
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
-    #
-    # # BOTTOM LEFT
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
-    #
-    # # UPPER RIGHT
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
-    #
-    # # TOP
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y - 5])
-    #
-    # # BOTTOM
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y + 5])
-    #
-    # # RIGHT
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X + 5, Globals.TEXT_Y])
-    #
-    # # LEFT
-    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    # surface.blit(text, [Globals.TEXT_CENTER_X - 5, Globals.TEXT_Y])
-    #
-    # # MAIN ATH teal text
-    # text = font.render("ASCEND THE HELIX", True, Globals.TEAL)
-    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y])
-
     # Health rendered text
-    # if health gets below 40, make text red, bold, and have exclamation points
+    # if health gets below 30, make text red and have exclamation points
     if 0 <= hp <= 30:
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100 !!!", True, Globals.RED)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.SUBTEXT_SIZE, False, False)
         text = font.render("Oh no! Catch more base pairs!", False, Globals.RED)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
-    # if health is 60, make text yellow
+    # if health is between 30 and 60, make text yellow
     elif 30 < hp <= 60:
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100", True, Globals.YELLOW)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
-        text = font.render("Just a little more, you can do it!", False, Globals.YELLOW)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.SUBTEXT_SIZE, False, False)
+        text = font.render("Just a little more, you can do it!",
+                           False, Globals.YELLOW)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
-    # if health is 80 or above, make text green
+    # if health is between 60 and 100 or above, make text green
     elif 60 <= hp <= 100:
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100", True, Globals.GREEN)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT,
+                                   Globals.SUBTEXT_SIZE, False, False)
         text = font.render("Wow! You're doing great!", False, Globals.GREEN)
         surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
-    # "Score: " rendered text
-    font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
-    text = font.render(score_str, True, Globals.WHITE)
+    # Score rendered text
+    font = pygame.font.SysFont(Globals.TEXT_FONT,
+                               Globals.TEXT_SIZE, True, False)
+    text = font.render(score_str, True, Globals.LIGHT_BLUE)
     surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 100])
 
-    # text to show goal score
-    font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
-    text = font.render("Reach a score of 50,000 to win!", False, Globals.WHITE)
+    # subtext to show goal score
+    font = pygame.font.SysFont(Globals.TEXT_FONT,
+                               Globals.SUBTEXT_SIZE, False, False)
+    text = font.render("Reach a score of 50,000 to win!",
+                       False, Globals.LIGHT_BLUE)
     surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 150])
 
-def scrolling_helix(surface):
-    # center_x = HELIX_START_X = (SCREEN_WIDTH - HELIX_IMG_WIDTH) / 2
-    # helix_y1 = HELIX_Y_OFF_SCREEN = -1 * SCREEN_HEIGHT
-    # helix_y2 =  HELIX_Y = 0
 
+def scrolling_helix(surface):
     image = pygame.image.load("pairs.png").convert()
 
-    # surface.blit(image, (center_x, Globals.HELIX_Y))
-    # surface.blit(image, (center_x, (Globals.HELIX_Y - Globals.HELIX_IMG_HEIGHT)))
-
     for _ in range(1):
-        # for event in pygame.event.get():
-        #     if event.type == QUIT:
-        #         pygame.quit()
-        #         quit()
-        surface.blit(image, (Globals.HELIX_START_X, Globals.HELIX_Y_OFF_SCREEN))
+        surface.blit(image, (Globals.HELIX_START_X,
+                             Globals.HELIX_Y_OFF_SCREEN))
         surface.blit(image, (Globals.HELIX_START_X, Globals.HELIX_Y))
 
         Globals.HELIX_Y_OFF_SCREEN += Globals.SCROLL_SPEED
         Globals.HELIX_Y += Globals.SCROLL_SPEED
 
         if Globals.HELIX_Y_OFF_SCREEN == Globals.SCREEN_HEIGHT:
-            Globals.HELIX_Y_OFF_SCREEN = Globals.HELIX_Y - Globals.SCREEN_HEIGHT
+            Globals.HELIX_Y_OFF_SCREEN = Globals.HELIX_Y - \
+                                         Globals.SCREEN_HEIGHT
             Globals.HELIX_Y = 0
         if Globals.HELIX_Y == Globals.SCREEN_HEIGHT:
-            Globals.HELIX_Y = Globals.HELIX_Y_OFF_SCREEN - Globals.SCREEN_HEIGHT
+            Globals.HELIX_Y = Globals.HELIX_Y_OFF_SCREEN - \
+                              Globals.SCREEN_HEIGHT
             Globals.HELIX_Y_OFF_SCREEN = 0
-
-        # Globals.HELIX_Y += 2.5
-
-
-# pygame.display.update()
-
-
-# background_surface = pygame.surface.Surface(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT)
-# def scrolling_helix(surface):
-#
-#     # starts above the screen at -800
-#     helix_y1 = -1 * Globals.SCREEN_HEIGHT
-#     # starts at the top of the screen at 0
-#     helix_y2 = 0
-#     # center width to put helix
-#     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
-#
-#     # load images for both
-#     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
-#     # helix_img2 = pygame.image.load('pairs.png').convert()
-#
-#     done = False
-#     while not done:
-#         # renders helix images to above the screen and at 0
-#         surface.blit(helix_img1, (center_x, helix_y1))
-#         surface.blit(helix_img2, (center_x, helix_y2))
-#
-#         # moves helix down 1 pixel per frame
-#         helix_y1 += 1
-#         helix_y2 += 1
-#
-#         # if first image goes off the screen, place second image on top of it
-#         if helix_y1 == Globals.SCREEN_HEIGHT:
-#             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
-#             helix_y2 = 0
-#         if helix_y2 == Globals.SCREEN_HEIGHT:
-#             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
-#             helix_y1 = 0
-#
-#         # update screen
-#         pygame.display.update()
-#
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 quit()
 
 
 class Game(object):
@@ -439,7 +392,6 @@ class Game(object):
         self.ion_list = pygame.sprite.Group()
         self.nucleic_acid_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
-        # self.background_list = pygame.sprite.Group()
 
         # Create the nucleic sprites
         for i in range(1):
@@ -449,56 +401,16 @@ class Game(object):
         for i in range(10):
             self.create_ions()
 
-        # for i in range(100000):
-        #     self.create_helix()
-
         # Create the player
         self.player = Player.Player()
         self.all_sprites_list.add(self.player)
 
-        # self.helix = Helix.Helix()
-        # self.background_list.add(self.helix)
-
-        self.image = pygame.Surface([Globals.HELIX_WIDTH, Globals.HELIX_HEIGHT])
-        # self.image = pygame.Surface([Globals.HELIX_IMG_WIDTH, Globals.HELIX_IMG_HEIGHT])
-        # self.image = pygame.Surface([610, 800])
+        self.image = pygame.Surface([Globals.HELIX_WIDTH,
+                                     Globals.HELIX_HEIGHT])
         self.rect = self.image.get_rect()
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-        # surface.blit(self.scrolling_helix(screen))
-
-    # def create_helix(self):
-    #     # helix = Helix.helix()
-    #     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
-    #     helix_y1 = -1 * Globals.SCREEN_HEIGHT
-    #     helix_y2 = 0
-    #     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
-    #     while True:
-    #
-    #         # renders helix images to above the screen and at 0
-    #         screen.blit(helix_img1, (center_x, helix_y1))
-    #         screen.blit(helix_img2, (center_x, helix_y2))
-    #
-    #         # moves helix down 1 pixel per frame
-    #         helix_y1 += 1
-    #         helix_y2 += 1
-    #
-    #         # if first image goes off the screen, place second image on top of it
-    #         if helix_y1 == Globals.SCREEN_HEIGHT:
-    #             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
-    #             helix_y2 = 0
-    #         if helix_y2 == Globals.SCREEN_HEIGHT:
-    #             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
-    #             helix_y1 = 0
-    #
-    #         # update screen
-    #         pygame.display.update()
-    #
-    #         for event in pygame.event.get():
-    #             if event.type == QUIT:
-    #                 pygame.quit()
-    #                 quit()
 
     def create_nucleic_acids(self):
         adenine = nucleicAcid.Adenine()
@@ -507,20 +419,28 @@ class Game(object):
         thymine = nucleicAcid.Thymine()
 
         # create adenine acids
-        adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        adenine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
+        adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                        Globals.HELIX_RIGHT_BOUNDARY)
+        adenine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                          Globals.NUCLEIC_ACID_WIDTH)
 
         # create cytosine acids
-        cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        cytosine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
+        cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                         Globals.HELIX_RIGHT_BOUNDARY)
+        cytosine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                           Globals.NUCLEIC_ACID_WIDTH)
 
         # create guanine acids
-        guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        guanine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
+        guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                        Globals.HELIX_RIGHT_BOUNDARY)
+        guanine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                          Globals.NUCLEIC_ACID_WIDTH)
 
         # create thymine acids
-        thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        thymine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
+        thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                        Globals.HELIX_RIGHT_BOUNDARY)
+        thymine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                          Globals.NUCLEIC_ACID_WIDTH)
 
         # add adenine to the list
         self.nucleic_acid_list.add(adenine)
@@ -545,16 +465,22 @@ class Game(object):
         electron = Ion.Electron()
 
         # create proton ions
-        proton.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        proton.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+        proton.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                       Globals.HELIX_RIGHT_BOUNDARY)
+        proton.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                         Globals.ION_WIDTH)
 
         # create neutron ions
-        neutron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        neutron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+        neutron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                        Globals.HELIX_RIGHT_BOUNDARY)
+        neutron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                          Globals.ION_WIDTH)
 
         # create electron ions
-        electron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        electron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
+        electron.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                         Globals.HELIX_RIGHT_BOUNDARY)
+        electron.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT -
+                                           Globals.ION_WIDTH)
 
         # add protons to the list
         self.ion_list.add(proton)
@@ -628,8 +554,11 @@ class Game(object):
         self.all_sprites_list.update()
 
         # See if the player has collided with anything.
-        ions_hit_list = pygame.sprite.spritecollide(self.player, self.ion_list, True)
-        nucleic_acid_hit_list = pygame.sprite.spritecollide(self.player, self.nucleic_acid_list, True)
+        ions_hit_list = \
+            pygame.sprite.spritecollide(self.player, self.ion_list, True)
+        nucleic_acid_hit_list = \
+            pygame.sprite.spritecollide(self.player,
+                                        self.nucleic_acid_list, True)
 
         score += 10
         if score >= 50000:
@@ -638,7 +567,7 @@ class Game(object):
 
         # Check the list of collisions.
         for _ in ions_hit_list:
-            hp = hp - 10
+            hp -= 10
             self.create_ions()
 
             if hp == 0:
@@ -646,7 +575,7 @@ class Game(object):
                 game_state = "game_over"
 
         for _ in nucleic_acid_hit_list:
-            hp = hp + 10
+            hp += 10
             self.sound2.play()
 
             if hp > 100:
@@ -678,155 +607,19 @@ class Game(object):
             self.player.stop()
             self.player.rect.y = 0
 
-    # def scrolling_helix(self, surface):
-    #
-    #     # background_surface = pygame.Surface(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT)
-    #
-    #     # starts above the screen at -800
-    #     helix_y1 = -1 * Globals.SCREEN_HEIGHT
-    #     # starts at the top of the screen at 0
-    #     helix_y2 = 0
-    #     # center width to put helix
-    #     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
-    #
-    #     # load images for both
-    #     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
-    #
-    #
-    #     while True:
-    #         # renders helix images to above the screen and at 0
-    #         screen.blit(helix_img1, (center_x, helix_y1))
-    #         screen.blit(helix_img2, (center_x, helix_y2))
-    #
-    #         # moves helix down 1 pixel per frame
-    #         helix_y1 += 1
-    #         helix_y2 += 1
-    #
-    #         # if first image goes off the screen, place second image on top of it
-    #         if helix_y1 == Globals.SCREEN_HEIGHT:
-    #             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
-    #             helix_y2 = 0
-    #         if helix_y2 == Globals.SCREEN_HEIGHT:
-    #             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
-    #             helix_y1 = 0
-    #
-    #         # update screen
-    #         pygame.display.update()
-    #
-    #         for event in pygame.event.get():
-    #             if event.type == QUIT:
-    #                 pygame.quit()
-    #                 quit()
-
     def display_frame(self, surface):
         """ Display everything to the screen for the game. """
-        # global hp, game_state
-        # score_str = "Score: " + str(score)
-        # health_str = "Health: " + str(hp)
         surface.fill(Globals.BLACK)
 
         if game_state == "game":
-            # background = pygame.image.load("background.png").convert_alpha()
-            # background = pygame.transform.scale(background, (Globals.SCREEN_WIDTH + 300, Globals.SCREEN_HEIGHT))
-            # screen.blit(background, (-200, 0))
-
             scrolling_helix(surface)
+
             self.all_sprites_list.draw(surface)
 
-            pygame.draw.rect(surface, Globals.BLACK, [0, 0, 175, Globals.SCREEN_HEIGHT], 0)
-            # pygame.draw.rect(surface, Globals.BLUE, [0, 0, 315, Globals.SCREEN_HEIGHT], 1)
-            # pygame.draw.rect(surface, Globals.BLUE, [1085, 0, 315, Globals.SCREEN_HEIGHT], 1)
+            pygame.draw.rect(surface, Globals.BLACK,
+                             [0, 0, 175, Globals.SCREEN_HEIGHT], 0)
 
             display_text(surface)
-            # # "Your Statistics" rendered text
-            # # BOTTOM RIGHT
-            # font = pygame.font.SysFont('franklingothicmedium', 40, True, False)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507+3, (Globals.SCREEN_HEIGHT - 790)+3])
-            #
-            # # UPPER LEFT
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507-3, (Globals.SCREEN_HEIGHT - 790)-3])
-            #
-            # # BOTTOM LEFT
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507 - 3, (Globals.SCREEN_HEIGHT - 790) + 3])
-            #
-            # # UPPER RIGHT
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507+3, (Globals.SCREEN_HEIGHT - 790) - 3])
-            #
-            # # TOP
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790)-5])
-            #
-            # # BOTTOM
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790) + 5])
-            #
-            # # RIGHT
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507 + 5, (Globals.SCREEN_HEIGHT - 790)])
-            #
-            # # LEFT
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-            # surface.blit(text, [507 - 5, (Globals.SCREEN_HEIGHT - 790)])
-            #
-            # # MAIN teal text
-            # # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
-            # text = font.render("ASCEND THE HELIX", True, Globals.TEAL)
-            # surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790)])
-            #
-            # # "Health: " out of 100 rendered text
-            # # if health gets below 40, make text red, bold, and have exclamation points
-            # if 0 <= hp <= 30:
-            #     font = pygame.font.SysFont('dubai', 35, True, False)
-            #     text = font.render(health_str + " / 100 !!!", True, Globals.RED)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
-            #
-            #     # words of encouragement in corresponding color
-            #     font = pygame.font.SysFont('dubai', 20, False, False)
-            #     text = font.render("Oh no! Catch more base pairs!", False, Globals.RED)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
-            #
-            # # if health is 60, make text yellow
-            # elif 30 < hp <= 60:
-            #     font = pygame.font.SysFont('dubai', 35, True, False)
-            #     text = font.render(health_str + " / 100", True, Globals.YELLOW)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
-            #
-            #     # words of encouragement in corresponding color
-            #     font = pygame.font.SysFont('dubai', 20, False, False)
-            #     text = font.render("Just a little more, you can do it!", False, Globals.YELLOW)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
-            #
-            # # if health is 80 or above, make text green
-            # elif 60 <= hp <= 100:
-            #     font = pygame.font.SysFont('dubai', 35, True, False)
-            #     text = font.render(health_str + " / 100", True, Globals.GREEN)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
-            #
-            #     # words of encouragement in corresponding color
-            #     font = pygame.font.SysFont('dubai', 20, False, False)
-            #     text = font.render("Wow! You're doing great!", False, Globals.GREEN)
-            #     surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
-            #
-            # # "Score: " rendered text
-            # font = pygame.font.SysFont('dubai', 35, True, False)
-            # text = font.render(score_str, True, Globals.BLUE)
-            # surface.blit(text, [Globals.SCREEN_WIDTH - 300, Globals.SCREEN_HEIGHT - 730])
-            #
-            # # text to show goal score
-            # font = pygame.font.SysFont('dubai', 20, False, False)
-            # text = font.render("Reach a score of 50,000 to win!", False, Globals.BLUE)
-            # surface.blit(text, [Globals.SCREEN_WIDTH - 300, Globals.SCREEN_HEIGHT - 680])
 
         pygame.display.flip()
 
@@ -864,8 +657,6 @@ def main():
 
         # Draw the current frame
         game.display_frame(screen)
-
-        # scrolling_helix(screen)
 
         # Pause for the next frame
         clock.tick(60)
