@@ -22,6 +22,10 @@ import Globals
 import Player
 import Ion
 import nucleicAcid
+import Helix
+
+import sys
+from pygame.locals import *
 
 hp = 100
 score = 0
@@ -30,6 +34,7 @@ screen = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
 print(pygame.font.get_fonts())
+
 
 def game_over_screen():
     global screen, hp, game_state, score
@@ -253,6 +258,81 @@ def game_intro():
         clock.tick(60)
 
 
+def scrolling_helix(surface):
+    # center_x = HELIX_START_X = (SCREEN_WIDTH - HELIX_IMG_WIDTH) / 2
+    # helix_y1 = HELIX_Y_OFF_SCREEN = -1 * SCREEN_HEIGHT
+    # helix_y2 =  HELIX_Y = 0
+
+    image = pygame.image.load("pairs.png").convert()
+
+    # surface.blit(image, (center_x, Globals.HELIX_Y))
+    # surface.blit(image, (center_x, (Globals.HELIX_Y - Globals.HELIX_IMG_HEIGHT)))
+
+    for _ in range(1):
+        # for event in pygame.event.get():
+        #     if event.type == QUIT:
+        #         pygame.quit()
+        #         quit()
+        surface.blit(image, (Globals.HELIX_START_X, Globals.HELIX_Y_OFF_SCREEN))
+        surface.blit(image, (Globals.HELIX_START_X, Globals.HELIX_Y))
+
+        Globals.HELIX_Y_OFF_SCREEN += Globals.SCROLL_SPEED
+        Globals.HELIX_Y += Globals.SCROLL_SPEED
+
+        if Globals.HELIX_Y_OFF_SCREEN == Globals.SCREEN_HEIGHT:
+            Globals.HELIX_Y_OFF_SCREEN = Globals.HELIX_Y - Globals.SCREEN_HEIGHT
+            Globals.HELIX_Y = 0
+        if Globals.HELIX_Y == Globals.SCREEN_HEIGHT:
+            Globals.HELIX_Y = Globals.HELIX_Y_OFF_SCREEN - Globals.SCREEN_HEIGHT
+            Globals.HELIX_Y_OFF_SCREEN = 0
+
+        # Globals.HELIX_Y += 2.5
+
+
+# pygame.display.update()
+
+
+# background_surface = pygame.surface.Surface(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT)
+# def scrolling_helix(surface):
+#
+#     # starts above the screen at -800
+#     helix_y1 = -1 * Globals.SCREEN_HEIGHT
+#     # starts at the top of the screen at 0
+#     helix_y2 = 0
+#     # center width to put helix
+#     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
+#
+#     # load images for both
+#     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
+#     # helix_img2 = pygame.image.load('pairs.png').convert()
+#
+#     done = False
+#     while not done:
+#         # renders helix images to above the screen and at 0
+#         surface.blit(helix_img1, (center_x, helix_y1))
+#         surface.blit(helix_img2, (center_x, helix_y2))
+#
+#         # moves helix down 1 pixel per frame
+#         helix_y1 += 1
+#         helix_y2 += 1
+#
+#         # if first image goes off the screen, place second image on top of it
+#         if helix_y1 == Globals.SCREEN_HEIGHT:
+#             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
+#             helix_y2 = 0
+#         if helix_y2 == Globals.SCREEN_HEIGHT:
+#             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
+#             helix_y1 = 0
+#
+#         # update screen
+#         pygame.display.update()
+#
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 pygame.quit()
+#                 quit()
+
+
 class Game(object):
     """ This class represents an instance of the game. If we need to
         reset the game we'd just need to create a new instance of this
@@ -273,6 +353,7 @@ class Game(object):
         self.ion_list = pygame.sprite.Group()
         self.nucleic_acid_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
+        # self.background_list = pygame.sprite.Group()
 
         # Create the nucleic sprites
         for i in range(1):
@@ -282,15 +363,56 @@ class Game(object):
         for i in range(10):
             self.create_ions()
 
+        # for i in range(100000):
+        #     self.create_helix()
+
         # Create the player
         self.player = Player.Player()
         self.all_sprites_list.add(self.player)
 
+        # self.helix = Helix.Helix()
+        # self.background_list.add(self.helix)
+
         self.image = pygame.Surface([Globals.HELIX_WIDTH, Globals.HELIX_HEIGHT])
+        # self.image = pygame.Surface([Globals.HELIX_IMG_WIDTH, Globals.HELIX_IMG_HEIGHT])
+        # self.image = pygame.Surface([610, 800])
         self.rect = self.image.get_rect()
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+        # surface.blit(self.scrolling_helix(screen))
+
+    # def create_helix(self):
+    #     # helix = Helix.helix()
+    #     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
+    #     helix_y1 = -1 * Globals.SCREEN_HEIGHT
+    #     helix_y2 = 0
+    #     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
+    #     while True:
+    #
+    #         # renders helix images to above the screen and at 0
+    #         screen.blit(helix_img1, (center_x, helix_y1))
+    #         screen.blit(helix_img2, (center_x, helix_y2))
+    #
+    #         # moves helix down 1 pixel per frame
+    #         helix_y1 += 1
+    #         helix_y2 += 1
+    #
+    #         # if first image goes off the screen, place second image on top of it
+    #         if helix_y1 == Globals.SCREEN_HEIGHT:
+    #             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
+    #             helix_y2 = 0
+    #         if helix_y2 == Globals.SCREEN_HEIGHT:
+    #             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
+    #             helix_y1 = 0
+    #
+    #         # update screen
+    #         pygame.display.update()
+    #
+    #         for event in pygame.event.get():
+    #             if event.type == QUIT:
+    #                 pygame.quit()
+    #                 quit()
 
     def create_nucleic_acids(self):
         adenine = nucleicAcid.Adenine()
@@ -300,19 +422,19 @@ class Game(object):
 
         # create adenine acids
         adenine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        adenine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLIEIC_ACID_WIDTH)
+        adenine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
 
         # create cytosine acids
         cytosine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        cytosine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLIEIC_ACID_WIDTH)
+        cytosine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
 
         # create guanine acids
         guanine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        guanine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLIEIC_ACID_WIDTH)
+        guanine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
 
         # create thymine acids
         thymine.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
-        thymine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLIEIC_ACID_WIDTH)
+        thymine.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.NUCLEIC_ACID_WIDTH)
 
         # add adenine to the list
         self.nucleic_acid_list.add(adenine)
@@ -336,7 +458,7 @@ class Game(object):
         neutron = Ion.Neutron()
         electron = Ion.Electron()
 
-        # # create proton ions
+        # create proton ions
         proton.rect.y = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
         proton.rect.y = random.randrange(-300, Globals.HELIX_HEIGHT - Globals.ION_WIDTH)
 
@@ -430,7 +552,7 @@ class Game(object):
 
         # Check the list of collisions.
         for _ in ions_hit_list:
-            hp = hp - 20
+            hp = hp - 10
             self.create_ions()
 
             if hp == 0:
@@ -438,7 +560,7 @@ class Game(object):
                 game_state = "game_over"
 
         for _ in nucleic_acid_hit_list:
-            hp = hp + 20
+            hp = hp + 10
             self.sound2.play()
 
             if hp > 100:
@@ -470,6 +592,46 @@ class Game(object):
             self.player.stop()
             self.player.rect.y = 0
 
+    # def scrolling_helix(self, surface):
+    #
+    #     # background_surface = pygame.Surface(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT)
+    #
+    #     # starts above the screen at -800
+    #     helix_y1 = -1 * Globals.SCREEN_HEIGHT
+    #     # starts at the top of the screen at 0
+    #     helix_y2 = 0
+    #     # center width to put helix
+    #     center_x = (Globals.SCREEN_WIDTH - Globals.HELIX_IMG_WIDTH) / 2
+    #
+    #     # load images for both
+    #     helix_img1 = helix_img2 = pygame.image.load('pairs.png').convert()
+    #
+    #
+    #     while True:
+    #         # renders helix images to above the screen and at 0
+    #         screen.blit(helix_img1, (center_x, helix_y1))
+    #         screen.blit(helix_img2, (center_x, helix_y2))
+    #
+    #         # moves helix down 1 pixel per frame
+    #         helix_y1 += 1
+    #         helix_y2 += 1
+    #
+    #         # if first image goes off the screen, place second image on top of it
+    #         if helix_y1 == Globals.SCREEN_HEIGHT:
+    #             helix_y1 = helix_y2 - Globals.SCREEN_HEIGHT
+    #             helix_y2 = 0
+    #         if helix_y2 == Globals.SCREEN_HEIGHT:
+    #             helix_y2 = helix_y1 - Globals.SCREEN_HEIGHT
+    #             helix_y1 = 0
+    #
+    #         # update screen
+    #         pygame.display.update()
+    #
+    #         for event in pygame.event.get():
+    #             if event.type == QUIT:
+    #                 pygame.quit()
+    #                 quit()
+
     def display_frame(self, surface):
         """ Display everything to the screen for the game. """
         global hp, game_state
@@ -478,10 +640,8 @@ class Game(object):
         surface.fill(Globals.BLACK)
 
         if game_state == "game":
-            image = pygame.image.load("pairs.png").convert_alpha()
-            image = pygame.transform.scale(image, (Globals.HELIX_WIDTH + 470, Globals.HELIX_HEIGHT))
-            surface.blit(image, (Globals.HELIX_X - 250, Globals.HELIX_Y))
 
+            scrolling_helix(surface)
             self.all_sprites_list.draw(surface)
 
             pygame.draw.rect(surface, Globals.BLACK, [0, 0, 175, Globals.SCREEN_HEIGHT], 0)
@@ -530,6 +690,11 @@ class Game(object):
             text = font.render(score_str, True, Globals.BLUE)
             surface.blit(text, [10, Globals.SCREEN_HEIGHT - 645])
 
+            # text to show goal score
+            font = pygame.font.SysFont('dubai', 20, False, False)
+            text = font.render("Reach a score of 50,000 to win!", False, Globals.BLUE)
+            surface.blit(text, [10, Globals.SCREEN_HEIGHT - 600])
+
         pygame.display.flip()
 
 
@@ -566,6 +731,8 @@ def main():
 
         # Draw the current frame
         game.display_frame(screen)
+
+        # scrolling_helix(screen)
 
         # Pause for the next frame
         clock.tick(60)
