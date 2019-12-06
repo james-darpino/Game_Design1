@@ -20,7 +20,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.Surface([Globals.PLAYER_WIDTH, Globals.PLAYER_HEIGHT])
+        self.image = pygame.Surface([Globals.PLAYER_WIDTH,
+                                     Globals.PLAYER_HEIGHT])
         self.rect = self.image.get_rect()
         self.rect.x = self.starting_position_x
         self.rect.y = self.starting_position_y
