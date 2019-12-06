@@ -23,20 +23,16 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# pygame.draw.rect(screen, RED, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
-
 clock = pygame.time.Clock()
 
 helix_img1 = pygame.image.load('pairs.png').convert()
 helix_img2 = pygame.image.load('pairs.png').convert()
-helix_img1 = pygame.transform.scale(helix_img1, (HELIX_WIDTH+470, SCREEN_HEIGHT))
-helix_img2 = pygame.transform.scale(helix_img2, (HELIX_WIDTH+470, SCREEN_HEIGHT))
+helix_img1 = pygame.transform.scale(helix_img1, (HELIX_WIDTH + 470, SCREEN_HEIGHT))
+helix_img2 = pygame.transform.scale(helix_img2, (HELIX_WIDTH + 470, SCREEN_HEIGHT))
 
 helix_y1 = -1 * SCREEN_HEIGHT
 helix_y2 = 0
-center_x = (SCREEN_WIDTH - (HELIX_WIDTH+470)) / 2
-
-
+center_x = (SCREEN_WIDTH - (HELIX_WIDTH + 470)) / 2
 
 while True:
 
@@ -54,9 +50,6 @@ while True:
         helix_y1 = 0
 
     pygame.display.update()
-
-    # pygame.draw.rect(screen, color, [x, y, width, height], 0)
-    # pygame.draw.rect(screen, BLACK, [center_x, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
 
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
