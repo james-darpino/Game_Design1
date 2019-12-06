@@ -262,97 +262,87 @@ def display_text(surface):
     score_str = "Score: " + str(score)
     health_str = "Health: " + str(hp)
 
-
-
-    # "Your Statistics" rendered text
+    # centered "ASCEND THE HELIX" rendered text
     # BOTTOM RIGHT
-    font = pygame.font.SysFont('franklingothicmedium', 40, True, False)
+    font = pygame.font.SysFont(Globals.ATH_TEXT_FONT, Globals.ATH_TEXT_SIZE, True, False)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 + 3, (Globals.SCREEN_HEIGHT - 790) + 3])
+    surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
 
     # UPPER LEFT
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 - 3, (Globals.SCREEN_HEIGHT - 790) - 3])
+    surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
 
     # BOTTOM LEFT
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 - 3, (Globals.SCREEN_HEIGHT - 790) + 3])
+    surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
 
     # UPPER RIGHT
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 + 3, (Globals.SCREEN_HEIGHT - 790) - 3])
+    surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
 
     # TOP
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790) - 5])
+    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y - 5])
 
     # BOTTOM
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790) + 5])
+    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y + 5])
 
     # RIGHT
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 + 5, (Globals.SCREEN_HEIGHT - 790)])
+    surface.blit(text, [Globals.TEXT_CENTER_X + 5, Globals.TEXT_Y])
 
     # LEFT
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
     text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [507 - 5, (Globals.SCREEN_HEIGHT - 790)])
+    surface.blit(text, [Globals.TEXT_CENTER_X - 5, Globals.TEXT_Y])
 
-    # MAIN teal text
-    # font = pygame.font.SysFont('franklingothicmedium', 40, True, True)
+    # MAIN ATH teal text
     text = font.render("ASCEND THE HELIX", True, Globals.TEAL)
-    surface.blit(text, [507, (Globals.SCREEN_HEIGHT - 790)])
+    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y])
 
-    # "Health: " out of 100 rendered text
+    # Health rendered text
     # if health gets below 40, make text red, bold, and have exclamation points
     if 0 <= hp <= 30:
-        font = pygame.font.SysFont('dubai', 35, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100 !!!", True, Globals.RED)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont('dubai', 20, False, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
         text = font.render("Oh no! Catch more base pairs!", False, Globals.RED)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
     # if health is 60, make text yellow
     elif 30 < hp <= 60:
-        font = pygame.font.SysFont('dubai', 35, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100", True, Globals.YELLOW)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont('dubai', 20, False, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
         text = font.render("Just a little more, you can do it!", False, Globals.YELLOW)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
     # if health is 80 or above, make text green
     elif 60 <= hp <= 100:
-        font = pygame.font.SysFont('dubai', 35, True, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
         text = font.render(health_str + " / 100", True, Globals.GREEN)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 100])
 
         # words of encouragement in corresponding color
-        font = pygame.font.SysFont('dubai', 20, False, False)
+        font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
         text = font.render("Wow! You're doing great!", False, Globals.GREEN)
-        surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
+        surface.blit(text, [Globals.TEXT_LEFT_X, Globals.TEXT_Y + 150])
 
     # "Score: " rendered text
-    font = pygame.font.SysFont('dubai', 35, True, False)
+    font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
     text = font.render(score_str, True, Globals.BLUE)
-    surface.blit(text, [Globals.SCREEN_WIDTH - 300, Globals.SCREEN_HEIGHT - 730])
+    surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 100])
 
     # text to show goal score
-    font = pygame.font.SysFont('dubai', 20, False, False)
+    font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
     text = font.render("Reach a score of 50,000 to win!", False, Globals.BLUE)
-    surface.blit(text, [Globals.SCREEN_WIDTH - 300, Globals.SCREEN_HEIGHT - 680])
+    surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 150])
 
 def scrolling_helix(surface):
     # center_x = HELIX_START_X = (SCREEN_WIDTH - HELIX_IMG_WIDTH) / 2
