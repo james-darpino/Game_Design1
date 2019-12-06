@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
     health = 100.0
     maxHealth = 100
     healthDashes = 10
+    distance = 9
 
     def __init__(self):
         super().__init__()
@@ -43,24 +44,24 @@ class Player(pygame.sprite.Sprite):
     # Player-controlled movement:
     def go_left(self):
         """ Called when the user hits the left arrow. """
-        self.change_x = -6
+        self.change_x = -self.distance
         self.image = pygame.image.load("character_left.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (75, 75))
 
     # screen.blit(start_text, (Globals.START_X, Globals.START_Y))
     def go_right(self):
         """ Called when the user hits the right arrow. """
-        self.change_x = 6
+        self.change_x = self.distance
         self.image = pygame.image.load("character_right.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (75, 75))
 
     def go_down(self):
         """called when the user hits the down arrow"""
-        self.change_y = 6
+        self.change_y = self.distance
 
     def go_up(self):
         """called when the user hits the up arrow"""
-        self.change_y = -6
+        self.change_y = -self.distance
 
     def stop(self):
         """ Called when the user lets off the keyboard. """
