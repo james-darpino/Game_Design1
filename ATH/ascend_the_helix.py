@@ -653,7 +653,7 @@ class Game(object):
 
             # "Health: " out of 100 rendered text
             # if health gets below 40, make text red, bold, and have exclamation points
-            if 0 <= hp <= 40:
+            if 0 <= hp <= 30:
                 font = pygame.font.SysFont('dubai', 35, True, False)
                 text = font.render(health_str + " / 100 !!!", True, Globals.RED)
                 surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
@@ -664,7 +664,7 @@ class Game(object):
                 surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
 
             # if health is 60, make text yellow
-            elif hp == 60:
+            elif 30 < hp <= 60:
                 font = pygame.font.SysFont('dubai', 35, False, False)
                 text = font.render(health_str + " / 100", True, Globals.YELLOW)
                 surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
@@ -675,7 +675,7 @@ class Game(object):
                 surface.blit(text, [10, Globals.SCREEN_HEIGHT - 680])
 
             # if health is 80 or above, make text green
-            elif 80 <= hp <= 100:
+            elif 60 <= hp <= 100:
                 font = pygame.font.SysFont('dubai', 35, False, False)
                 text = font.render(health_str + " / 100", True, Globals.GREEN)
                 surface.blit(text, [10, Globals.SCREEN_HEIGHT - 730])
