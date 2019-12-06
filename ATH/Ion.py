@@ -12,16 +12,18 @@ class Proton(pygame.sprite.Sprite):
         self.image = pygame.Surface([Globals.ION_WIDTH, Globals.ION_HEIGHT])
         self.rect = self.image.get_rect()
         self.image = pygame.image.load("proton.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH, Globals.ION_HEIGHT))
+        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH,
+                                                         Globals.ION_HEIGHT))
 
     def draw(self, screen):
         """ Maps the image to the rectangle. """
         screen.blit(self.image, self.rect)
 
     def reset_pos(self):
-        """ Shows the range and boundaries of where the ion should be placed. """
+        """Shows the range and boundaries of where the ion should be placed."""
         self.rect.y = random.randrange(-300, -20)
-        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                     Globals.HELIX_RIGHT_BOUNDARY)
 
     def update(self):
         """ Automatically called when we need to move the ion. """
@@ -40,16 +42,18 @@ class Neutron(pygame.sprite.Sprite):
         self.image = pygame.Surface([Globals.ION_WIDTH, Globals.ION_HEIGHT])
         self.rect = self.image.get_rect()
         self.image = pygame.image.load("neutron.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH, Globals.ION_HEIGHT))
+        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH,
+                                                         Globals.ION_HEIGHT))
 
     def draw(self, screen):
         """ Maps the image to the rectangle. """
         screen.blit(self.image, self.rect)
 
     def reset_pos(self):
-        """ Shows the range and boundaries of where the ion should be placed. """
+        """Shows the range and boundaries of where the ion should be placed."""
         self.rect.y = random.randrange(-300, -20)
-        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                     Globals.HELIX_RIGHT_BOUNDARY)
 
     def update(self):
         """ Automatically called when we need to move the ion. """
@@ -68,16 +72,18 @@ class Electron(pygame.sprite.Sprite):
         self.image = pygame.Surface([Globals.ION_WIDTH, Globals.ION_HEIGHT])
         self.rect = self.image.get_rect()
         self.image = pygame.image.load("electron.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH, Globals.ION_HEIGHT))
+        self.image = pygame.transform.scale(self.image, (Globals.ION_WIDTH,
+                                                         Globals.ION_HEIGHT))
 
     def draw(self, screen):
         """ Maps the image to the rectangle. """
         screen.blit(self.image, self.rect)
 
     def reset_pos(self):
-        """ Shows the range and boundaries of where the ion should be placed. """
+        """Shows the range and boundaries of where the ion should be placed."""
         self.rect.y = random.randrange(-300, -20)
-        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY, Globals.HELIX_RIGHT_BOUNDARY)
+        self.rect.x = random.uniform(Globals.HELIX_LEFT_BOUNDARY,
+                                     Globals.HELIX_RIGHT_BOUNDARY)
 
     def update(self):
         """ Automatically called when we need to move the ion. """
