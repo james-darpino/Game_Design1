@@ -262,43 +262,43 @@ def display_text(surface):
     score_str = "Score: " + str(score)
     health_str = "Health: " + str(hp)
 
-    # centered "ASCEND THE HELIX" rendered text
-    # BOTTOM RIGHT
-    font = pygame.font.SysFont(Globals.ATH_TEXT_FONT, Globals.ATH_TEXT_SIZE, True, False)
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
-
-    # UPPER LEFT
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
-
-    # BOTTOM LEFT
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
-
-    # UPPER RIGHT
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
-
-    # TOP
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y - 5])
-
-    # BOTTOM
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y + 5])
-
-    # RIGHT
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X + 5, Globals.TEXT_Y])
-
-    # LEFT
-    text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
-    surface.blit(text, [Globals.TEXT_CENTER_X - 5, Globals.TEXT_Y])
-
-    # MAIN ATH teal text
-    text = font.render("ASCEND THE HELIX", True, Globals.TEAL)
-    surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y])
+    # # centered "ASCEND THE HELIX" rendered text
+    # # BOTTOM RIGHT
+    # font = pygame.font.SysFont(Globals.ATH_TEXT_FONT, Globals.ATH_TEXT_SIZE, True, False)
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
+    #
+    # # UPPER LEFT
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
+    #
+    # # BOTTOM LEFT
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X - Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y + Globals.TEXT_OUTLINE_WIDTH])
+    #
+    # # UPPER RIGHT
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X + Globals.TEXT_OUTLINE_WIDTH, Globals.TEXT_Y - Globals.TEXT_OUTLINE_WIDTH])
+    #
+    # # TOP
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y - 5])
+    #
+    # # BOTTOM
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y + 5])
+    #
+    # # RIGHT
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X + 5, Globals.TEXT_Y])
+    #
+    # # LEFT
+    # text = font.render("ASCEND THE HELIX", True, Globals.BLACK)
+    # surface.blit(text, [Globals.TEXT_CENTER_X - 5, Globals.TEXT_Y])
+    #
+    # # MAIN ATH teal text
+    # text = font.render("ASCEND THE HELIX", True, Globals.TEAL)
+    # surface.blit(text, [Globals.TEXT_CENTER_X, Globals.TEXT_Y])
 
     # Health rendered text
     # if health gets below 40, make text red, bold, and have exclamation points
@@ -336,12 +336,12 @@ def display_text(surface):
 
     # "Score: " rendered text
     font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.TEXT_SIZE, True, False)
-    text = font.render(score_str, True, Globals.BLUE)
+    text = font.render(score_str, True, Globals.WHITE)
     surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 100])
 
     # text to show goal score
     font = pygame.font.SysFont(Globals.TEXT_FONT, Globals.SUBTEXT_SIZE, False, False)
-    text = font.render("Reach a score of 50,000 to win!", False, Globals.BLUE)
+    text = font.render("Reach a score of 50,000 to win!", False, Globals.WHITE)
     surface.blit(text, [Globals.TEXT_RIGHT_X, Globals.TEXT_Y + 150])
 
 def scrolling_helix(surface):
@@ -734,6 +734,8 @@ class Game(object):
             self.all_sprites_list.draw(surface)
 
             pygame.draw.rect(surface, Globals.BLACK, [0, 0, 175, Globals.SCREEN_HEIGHT], 0)
+            # pygame.draw.rect(surface, Globals.BLUE, [0, 0, 315, Globals.SCREEN_HEIGHT], 1)
+            # pygame.draw.rect(surface, Globals.BLUE, [1085, 0, 315, Globals.SCREEN_HEIGHT], 1)
 
             display_text(surface)
             # # "Your Statistics" rendered text
