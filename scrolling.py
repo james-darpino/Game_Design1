@@ -2,19 +2,11 @@ import pygame
 import sys
 from pygame.locals import *
 
-# SCREEN_WIDTH = 512
-# SCREEN_HEIGHT = 512
-
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 800
 
-HELIX_WIDTH = 512
-HELIX_HEIGHT = 512
-# helix actual width is 512+470 = 982
-# helix actual height is 800
-# helix actual dimensions are 982x800
-# helix width (boundaries) should be 610 (350 to 960)
-# helix only dimensions are 610x800
+HELIX_WIDTH = 610
+HELIX_HEIGHT = 800
 
 BLACK = (255, 255, 255)
 RED = (255, 0, 0)
@@ -27,12 +19,12 @@ clock = pygame.time.Clock()
 
 helix_img1 = pygame.image.load('pairs.png').convert()
 helix_img2 = pygame.image.load('pairs.png').convert()
-helix_img1 = pygame.transform.scale(helix_img1, (HELIX_WIDTH + 470, SCREEN_HEIGHT))
-helix_img2 = pygame.transform.scale(helix_img2, (HELIX_WIDTH + 470, SCREEN_HEIGHT))
+helix_img1 = pygame.transform.scale(helix_img1, (HELIX_WIDTH, SCREEN_HEIGHT))
+helix_img2 = pygame.transform.scale(helix_img2, (HELIX_WIDTH, SCREEN_HEIGHT))
 
 helix_y1 = -1 * SCREEN_HEIGHT
 helix_y2 = 0
-center_x = (SCREEN_WIDTH - (HELIX_WIDTH + 470)) / 2
+center_x = (SCREEN_WIDTH - HELIX_WIDTH) / 2
 
 while True:
 
