@@ -23,7 +23,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-pygame.draw.rect(screen, RED, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
+# pygame.draw.rect(screen, RED, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0)
 
 clock = pygame.time.Clock()
 
